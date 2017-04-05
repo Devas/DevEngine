@@ -12,6 +12,5 @@ Features:
 
 Screenshots:
 <p align="center">
-  <img src="https://cloud.githubusercontent.com/assets/9119159/24720882/df3e695a-1a3e-11e7-8751-b623f4234144.png" width="350"/>
+  <img src="https://cloud.githubusercontent.com/assets/9119159/24720882/df3e695a-1a3e-11e7-8751-b623f4234144.png" width="500"/>
 </p>
-#![alt tag](https://cloud.githubusercontent.com/assets/9119159/24720882/df3e695a-1a3e-11e7-8751-b623f4234144.png)
