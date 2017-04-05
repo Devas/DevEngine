@@ -1,5 +1,5 @@
 # DevEngine
-3D graphics engine built with LWJGL
+3D graphics engine built with Java and LWJGL
 
 ### Features:
 * loading .OBJ 3d models
