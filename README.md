@@ -4,8 +4,8 @@
 ### Features:
 * loading .OBJ 3d models
 * batch rendering
-* textures, multitexturing
-* diffuse lightning, specular lightning
+* textures, multitexturing, transparency
+* diffuse lighting, specular lighting, light presets
 * fog
 * controlling entities by mouse or keyboard
 * different cameras
