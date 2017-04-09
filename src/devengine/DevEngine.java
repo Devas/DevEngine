@@ -30,6 +30,9 @@ public class DevEngine {
         Log.setVerbose(false);
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    // Main method with main engine loop
+    ///////////////////////////////////////////////////////////////////////////
     public static void main(String[] args) {
 
         DisplayManager.createDisplay();
@@ -54,8 +57,8 @@ public class DevEngine {
         TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("terrain/blend_map_1024"));
 
         List<Terrain> terrains = new ArrayList<>();
-        Terrain terrain1 = new Terrain(0, 0, loader, texturePack, blendMap);
-        Terrain terrain2 = new Terrain(1, 0, loader, texturePack, blendMap);
+        Terrain terrain1 = new Terrain(0, 0, loader, texturePack, blendMap, "heightmap_1_256.png"); // heightmap_2_1024.bmp
+        Terrain terrain2 = new Terrain(1, 0, loader, texturePack, blendMap, "heightmap_1_256.png");
         terrains.add(terrain1);
         terrains.add(terrain2);
 
@@ -101,12 +104,23 @@ public class DevEngine {
         flower.getTexture().setUseFakeLighting(true);
         TexturedModel fern = new TexturedModel(OBJLoader.loadObjModel("pack/fern", loader), new ModelTexture(loader.loadTexture("pack/fern")));
         fern.getTexture().setHasTransparency(true);
-        for (int i = 0; i < 3000; i++) {
-            entitiesList.add(new Entity("tree", tree, new Vector3f(random.nextFloat() * 1600, 0, random.nextFloat() * 800), new Vector3f(0, 0, 0), 3));
-            entitiesList.add(new Entity("grass", grass, new Vector3f(random.nextFloat() * 1600, 0, random.nextFloat() * 800), new Vector3f(0, 0, 0), 1));
-            entitiesList.add(new Entity("flower", flower, new Vector3f(random.nextFloat() * 1600, 0, random.nextFloat() * 800), new Vector3f(0, 0, 0), 1));
-            entitiesList.add(new Entity("fern", fern, new Vector3f(random.nextFloat() * 1600, 0, random.nextFloat() * 800), new Vector3f(0, 0, 0), 0.6f));
+
+        for (Terrain terrain : terrains) {
+            int numberOfEntities = 2000;
+            for (int i = 0; i < numberOfEntities; i++) {
+                float x = terrain.getX() + (random.nextFloat() * terrain.getSIZE());
+                float z = terrain.getZ() + (random.nextFloat() * terrain.getSIZE());
+                float y = terrain.getHeightOfTerrain(x, z);
+                float angle = random.nextFloat() * 360;
+                float size1 = random.nextFloat() * 0.1f + 0.6f;
+                float size2 = random.nextFloat() + 3.6f;
+                entitiesList.add(new Entity("tree", tree, new Vector3f(x, y, z), new Vector3f(0, angle, 0), size2));
+                entitiesList.add(new Entity("grass", grass, new Vector3f(x, y, z), new Vector3f(0, angle, 0), 1));
+                entitiesList.add(new Entity("flower", flower, new Vector3f(x, y, z), new Vector3f(0, angle, 0), 1));
+                entitiesList.add(new Entity("fern", fern, new Vector3f(x, y, z), new Vector3f(0, angle, 0), 0.6f));
+            }
         }
+
 //        entitiesList.add(tree1Entity);
 
         TexturedModel player = new TexturedModel(OBJLoader.loadObjModel("pack/player", loader), new ModelTexture(loader.loadTexture("pack/player")));
@@ -146,7 +160,7 @@ public class DevEngine {
 //            }
 
             // ThirdPerson
-            playerEntity.move();
+            playerEntity.move(terrain1); // TODO detect on which terrain player is standing
             camera.move();
 
             // Assigns all entities to batches.

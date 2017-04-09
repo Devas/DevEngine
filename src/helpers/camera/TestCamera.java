@@ -6,8 +6,10 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
+import terrains.Terrain;
 
-public class TestCamera extends Camera
+//public class TestCamera extends Camera
+public class TestCamera
 {
 	private float distanceFromPlayer = 50;
 	private float angleAroundPlayer = 0;
@@ -35,8 +37,7 @@ public class TestCamera extends Camera
 		this.player = player;
 	}
 
-//	public void move(Terrain terrain)
-	public void move()
+	public void move(Terrain terrain)
 	{
 		while (Mouse.next())
 		{
@@ -74,8 +75,7 @@ public class TestCamera extends Camera
 			{
 				Mouse.setGrabbed(false);
 			}
-//			player.move(terrain);
-			player.move();
+			player.move(terrain);
 			calculateZoom();
 			calculatePitch();
 			calculateAngleAroundPlayer();

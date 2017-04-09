@@ -34,7 +34,7 @@ public class Light {
         METAL_HALIDE((new Vector3f(242, 252, 255)).normalise(null)),
         HIGH_PRESSURE_SODIUM((new Vector3f(255, 183, 76)).normalise(null));
 
-        public Vector3f colour;
+        private Vector3f colour;
 
         Colour(Vector3f colour) {
             this.colour = colour;

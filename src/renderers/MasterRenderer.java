@@ -140,10 +140,12 @@ public class MasterRenderer {
 
     public static void enableLinePolygonMode() {
         GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+//        GL11.glLineWidth(2.0f); // change seize of line
     }
 
     public static void enablePointPolygonMode() {
         GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_POINT);
+//        GL11.glPointSize(1.4f); // change seize of point
     }
 
 }

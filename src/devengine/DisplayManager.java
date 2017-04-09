@@ -21,6 +21,7 @@ public class DisplayManager {
             Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
             Display.create(new PixelFormat(), attribs);
             Display.setTitle("DevEngine");
+//            Mouse.setGrabbed(true); // TODO enable / disable
         } catch (LWJGLException e) {
             e.printStackTrace();
         }

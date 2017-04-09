@@ -3,6 +3,7 @@ package toolbox;
 import helpers.camera.Camera;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Maths {
@@ -57,6 +58,42 @@ public class Maths {
         } else {
             return variable;
         }
+    }
+
+    // An interpolation between two inputs (min, max) for a parameter (value) in the closed unit interval [0, 1]
+
+    /**
+     * Imprecise method, which does not guarantee v = v1 when t = 1, due to floating-point arithmetic error.
+     * This form may be used when the hardware has a native fused multiply-add instruction.
+     *
+     * @param min
+     * @param max
+     * @param value
+     * @return
+     */
+    public static float lerpFast(float min, float max, float value) {
+        return min + value * (max - min);
+    }
+
+    /**
+     * Precise method, which guarantees v = max when value = 1.
+     *
+     * @param min
+     * @param max
+     * @param value
+     * @return
+     */
+    public static float lerp(float min, float max, float value) {
+        return (1 - value) * min + value * max;
+    }
+
+    // https://en.wikipedia.org/wiki/Barycentric_coordinate_system
+    public static float barycentricCoordsOnTriangle(Vector3f p1, Vector3f p2, Vector3f p3, Vector2f pos) {
+        float det = (p2.z - p3.z) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.z - p3.z);
+        float l1 = ((p2.z - p3.z) * (pos.x - p3.x) + (p3.x - p2.x) * (pos.y - p3.z)) / det;
+        float l2 = ((p3.z - p1.z) * (pos.x - p3.x) + (p1.x - p3.x) * (pos.y - p3.z)) / det;
+        float l3 = 1.0f - l1 - l2;
+        return l1 * p1.y + l2 * p2.y + l3 * p3.y;
     }
 
 }

@@ -4,15 +4,15 @@ import devengine.DisplayManager;
 import models.TexturedModel;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
+import terrains.Terrain;
 
 public class Player extends Entity {
 
     private static final float MOVE_SPEED = 20; // units per second
+    private static final float RUN_SPEED = 100; // units per second
     private static final float TURN_SPEED = 160; // degrees per second
     private static final float GRAVITY = -50;
     private static final float JUMP_POWER = 30;
-
-    private static final float TERRAIN_HEIGHT = 0;
 
     private float currentMoveSpeed = 0;
 //    private float currentMoveSpeed2 = 0;
@@ -28,7 +28,7 @@ public class Player extends Entity {
      * currentTurnSpeed it's amount the player is turning per second so we need multiply it by amount of seconds that
      * have passed
      */
-    public void move() {
+    public void move(Terrain terrain) {
         checkInputs();
         super.increaseRotation(0, currentTurnSpeed * DisplayManager.getCurrentFrameDurationSeconds(), 0); // TODO can be controlled by mouse super.increaseRotation(0, -Mouse.getDX(), 0);
 
@@ -43,10 +43,13 @@ public class Player extends Entity {
         upwardsSpeed += GRAVITY * DisplayManager.getCurrentFrameDurationSeconds(); // apply negative value of gravity
         // we must increase position first and check terrain second right before frame is rendered to avoid jump-flickering
         super.increasePosition(0, upwardsSpeed * DisplayManager.getCurrentFrameDurationSeconds(), 0);
-        if (super.getPosition().y < TERRAIN_HEIGHT) {
+
+        // float terrainHeight = 0; // If you make flat terrain set it to 0
+        float terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
+        if (super.getPosition().y < terrainHeight) {
             upwardsSpeed = 0;
             isInAir = false;
-            super.getPosition().y = TERRAIN_HEIGHT;
+            super.getPosition().y = terrainHeight;
         }
     }
 
@@ -59,9 +62,17 @@ public class Player extends Entity {
 
     private void checkInputs() {
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-            currentMoveSpeed = MOVE_SPEED;
+            if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                currentMoveSpeed = RUN_SPEED;
+            } else {
+                currentMoveSpeed = MOVE_SPEED;
+            }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-            currentMoveSpeed = -MOVE_SPEED;
+            if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                currentMoveSpeed = -RUN_SPEED;
+            } else {
+                currentMoveSpeed = -MOVE_SPEED;
+            }
         } else {
             currentMoveSpeed = 0;
         }

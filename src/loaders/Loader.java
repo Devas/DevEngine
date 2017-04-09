@@ -2,10 +2,7 @@ package loaders;
 
 import models.RawModel;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.*;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
@@ -17,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Loader {
+
+    private static final float MIPMAP_FACTOR = -0.5f; // the bigger number the less resolution of rendered texture
 
     private List<Integer> vaos = new ArrayList<>();
     private List<Integer> vbos = new ArrayList<>();
@@ -40,10 +39,12 @@ public class Loader {
         return new RawModel(vaoID, indices.length);
     }
 
+    // TODO extract texture and VAO loaders
     public int loadTexture(String fileName) {
         Texture texture = null;
         try {
             texture = TextureLoader.getTexture("PNG", new FileInputStream("res/" + fileName + ".png"));
+            enableMipmap();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -105,6 +106,12 @@ public class Loader {
         buffer.put(data);
         buffer.flip();
         return buffer;
+    }
+
+    private void enableMipmap() {
+        GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
+        GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, MIPMAP_FACTOR);
     }
 
     private int getMaxTextureSize() {
