@@ -163,7 +163,7 @@ public class DevEngine {
             playerEntity.move(terrain1); // TODO detect on which terrain player is standing
             camera.move();
 
-            // Assigns all entities to batches.
+            // Assigns all entities to batches
             for (Entity entity : entitiesList) {
                 masterRenderer.processEntity(entity);
 //                if (!paused) {

@@ -16,8 +16,8 @@ import java.io.IOException;
 public class Terrain {
 
     // The world is made up of a square grid where each square (Terrain) has edges of size Terrain.SIZE
-    private static final float SIZE = 800f;
-    private static final float MAX_HEIGHT = 40f;
+    private static final float SIZE = 800f; // TODO settable in GUI
+    private static final float MAX_HEIGHT = 40f; // TODO settable in GUI
     private static final float MAX_PIXEL_COLOUR = 256 * 256 * 256;
 
     // World position of the Terrain mesh
@@ -39,6 +39,9 @@ public class Terrain {
      * for example, because then the terrain would start half way along a grid square).
      * Using the gridX and gridZ coordinate and knowing the SIZE of each grid square, we can calculate
      * the actual world position of the terrain.
+     *
+     * @param gridX X coordinate of the Terrain in the grid
+     * @param gridZ Z coordinate of the Terrain in the grid
      */
     public Terrain(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap, String heightmap) {
         this.x = gridX * SIZE;
@@ -78,17 +81,34 @@ public class Terrain {
         return blendMap;
     }
 
+    /**
+     * Get height of the Terrain
+     *
+     * @param worldX X position in world-coordinates
+     * @param worldZ Z position in world-coordinates
+     * @return Height of the Terrain
+     */
     public float getHeightOfTerrain(float worldX, float worldZ) {
-        float terrainX = worldX - x;
-        float terrainZ = worldZ - z;
-        float gridSquareSize = SIZE / ((float) (heights.length - 1));
+        // Convert the world-coordinates of the object into the object's position in relation to the Terrain
+        // So now for any Terrain these will be in range 0 .. SEIZE
+        float terrainX = worldX - x; // range 0 .. SEIZE
+        float terrainZ = worldZ - z; // range 0 .. SEIZE
+
+        int gridSquaresCountAlongSide = heights.length - 1; // there is always 1 less than the number of vertices
+        float gridSquareSize = SIZE / ((float) gridSquaresCountAlongSide);
+
+        // Calculate coordinates indicating on which grid-square the object is standing inside the Terrain
         int gridX = (int) Math.floor(terrainX / gridSquareSize);
         int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
-        if (gridX < 0 || gridZ < 0 || gridX >= heights.length - 1 || gridZ >= heights.length - 1) { // TODO -1
+        if (gridX < 0 || gridZ < 0 || gridX >= heights.length - 1 || gridZ >= heights.length - 1) {
             return 0;
         }
+
+        // Calculate normalized coordinates indicating where the object is standing inside the grid-square
         float xCoord = (terrainX % gridSquareSize) / gridSquareSize; // range 0 .. 1
         float zCoord = (terrainZ % gridSquareSize) / gridSquareSize; // range 0 .. 1
+
+        // Every grid-square consists of 2 triangles, so detect the triangle and interpolate to get height
         float result;
         if (xCoord <= (1 - zCoord)) {
             result = Maths.barycentricCoordsOnTriangle(
@@ -107,7 +127,6 @@ public class Terrain {
     }
 
     private RawModel generateTerrain(Loader loader, String heightmap) {
-
         // Origin of java Image is at top left corner and x increases to the right side, and y increased downside.
         // To change it to the conventional coordinate system, change y value: y2 = image.height - y
         BufferedImage image = null;
@@ -119,6 +138,7 @@ public class Terrain {
         }
 
         // Set the number of vertices along each side of the terrain based on the size (x or y) of the image
+        // If the size of the image is power of 2, then there will be 2^n vertices along each side of Terrain
         // TODO add manual setting in case the image is big but we don't want to have high-poly terrain
         int VERTEX_COUNT = image.getHeight(); // get size of the image e.g. 1024 results in 1024 vertices along one side of the Terrain
         heights = new float[VERTEX_COUNT][VERTEX_COUNT];
@@ -210,7 +230,6 @@ public class Terrain {
 
     // TODO works better than previous - solves seams problem
     private Vector3f calculateNormal(int x, int z, BufferedImage image, int VERTEX_COUNT) {
-
         float heightL;
         float heightR;
         float heightD;
