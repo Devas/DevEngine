@@ -13,7 +13,11 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Loader {
+/**
+ * Loader is enum because there should be only one object managing all vaos, vbos, textures
+ */
+public enum Loader {
+    loader;
 
     private static final float MIPMAP_FACTOR = -0.5f; // the bigger number the less resolution of rendered texture
 
@@ -24,7 +28,7 @@ public class Loader {
     /**
      * Make sure textures will be tiled properly by repeating
      */
-    public Loader() {
+    Loader() {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
     }

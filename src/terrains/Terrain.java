@@ -1,6 +1,5 @@
 package terrains;
 
-import loaders.Loader;
 import models.RawModel;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -12,6 +11,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
+import static loaders.Loader.loader;
 
 public class Terrain {
 
@@ -43,12 +44,12 @@ public class Terrain {
      * @param gridX X coordinate of the Terrain in the grid
      * @param gridZ Z coordinate of the Terrain in the grid
      */
-    public Terrain(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap, String heightmap) {
+    public Terrain(int gridX, int gridZ, TerrainTexturePack texturePack, TerrainTexture blendMap, String heightmap) {
         this.x = gridX * SIZE;
         this.z = gridZ * SIZE;
         this.texturePack = texturePack;
         this.blendMap = blendMap;
-        this.model = generateTerrain(loader, heightmap); // TODO if heightmap null don't use heightmap but generate flat terrain or use flat heightmap
+        this.model = generateTerrain(heightmap); // TODO if heightmap null don't use heightmap but generate flat terrain or use flat heightmap
     }
 
     public static float getSIZE() {
@@ -126,7 +127,7 @@ public class Terrain {
         return result;
     }
 
-    private RawModel generateTerrain(Loader loader, String heightmap) {
+    private RawModel generateTerrain(String heightmap) {
         // Origin of java Image is at top left corner and x increases to the right side, and y increased downside.
         // To change it to the conventional coordinate system, change y value: y2 = image.height - y
         BufferedImage image = null;
