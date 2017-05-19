@@ -11,7 +11,7 @@
 * Entities controlled by mouse or keyboard
 * Different cameras
 
-### Build
+### Build:
 Use VM options: -Djava.library.path=native/windows/
 
 ### Screenshots:

@@ -86,7 +86,7 @@ public class StaticShader extends ShaderProgram {
     }
 
     public void loadTextureAtlasOffsets(float xOffset, float yOffset) {
-        super.load2DVector(location_textureAtlasOffsets, new Vector2f(xOffset, yOffset));
+        super.loadVector(location_textureAtlasOffsets, new Vector2f(xOffset, yOffset));
     }
 
 }
