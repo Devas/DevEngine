@@ -4,14 +4,37 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.*;
 
+/**
+ * This class is responsible for:
+ * -creating the display (by creating OpenGL context)
+ * -updating the display
+ * -closing the display
+ *
+ * All methods are static because this class uses static methods from org.lwjgl.opengl.Display class.
+ *
+ * This class has also getCurrentFrameDurationSeconds() method which is used to synchronize the movement of objects
+ * with the time duration of the frame. The speed of objects' movement will not be affected at all by FPS.
+ */
 public class DisplayManager {
 
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
-    private static final int FPS_CAP = 120;
+    private static final int FPSCAP = 120;
 
     private static long lastFrameEndTime;
     private static float currentFrameDurationSeconds;
+
+    public static int getWIDTH() {
+        return WIDTH;
+    }
+
+    public static int getHEIGHT() {
+        return HEIGHT;
+    }
+
+    public static int getFPSCAP() {
+        return FPSCAP;
+    }
 
     public static void createDisplay() {
 
@@ -35,7 +58,7 @@ public class DisplayManager {
     }
 
     public static void updateDisplay() {
-        Display.sync(FPS_CAP);
+        Display.sync(FPSCAP);
         Display.update();
         long currentFrameEndTime = getCurrentTimeMiliSeconds();
         currentFrameDurationSeconds = (currentFrameEndTime - lastFrameEndTime) / 1000f;

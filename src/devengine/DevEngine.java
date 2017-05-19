@@ -69,8 +69,8 @@ public class DevEngine {
 //                player.move();
 //            }
 
-            // Movement of player and camera
-            player.move(terrainsManager.getTerrain(player.getPosition().x, player.getPosition().z));
+            // Movement of the player and the camera
+            player.move(terrainsManager.getTerrain(player));
             camera.move();
 
             // Assigning all entities to batches

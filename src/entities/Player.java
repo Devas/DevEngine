@@ -9,13 +9,13 @@ import terrains.Terrain;
 public class Player extends Entity {
 
     private static final float MOVE_SPEED = 20; // units per second
-    private static final float RUN_SPEED = 100; // units per second
+    private static final float RUN_SPEED = 200; // units per second
     private static final float TURN_SPEED = 160; // degrees per second
     private static final float GRAVITY = -50;
     private static final float JUMP_POWER = 30;
 
     private float currentMoveSpeed = 0;
-//    private float currentMoveSpeed2 = 0;
+    //    private float currentMoveSpeed2 = 0;
     private float currentTurnSpeed = 0;
     private float upwardsSpeed = 0;
     private boolean isInAir = false;
@@ -25,8 +25,16 @@ public class Player extends Entity {
     }
 
     /**
-     * currentTurnSpeed it's amount the player is turning per second so we need multiply it by amount of seconds that
-     * have passed
+     * Moves the Player entity based on input.
+     * <p>
+     * Field currentTurnSpeed are degrees the player is turning per second.
+     * It needs to be multiplied by the number of seconds that have passed to sync movement with FPS.
+     * <p>
+     * If passed terrain is null then the terrain's height is set to 0.
+     * If passed Terrain is always null then the player's position will be always set to 0 - this will disable
+     * any collision detection.
+     *
+     * @param terrain The Terrain object used for collision detection
      */
     public void move(Terrain terrain) {
         checkInputs();
@@ -44,8 +52,14 @@ public class Player extends Entity {
         // we must increase position first and check terrain second right before frame is rendered to avoid jump-flickering
         super.increasePosition(0, upwardsSpeed * DisplayManager.getCurrentFrameDurationSeconds(), 0);
 
-        // float terrainHeight = 0; // If you make flat terrain set it to 0
-        float terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
+        // If passed Terrain is null then set terrainHeight to 0
+        float terrainHeight;
+        if (terrain == null) {
+            terrainHeight = 0;
+        } else {
+            terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
+        }
+
         if (super.getPosition().y < terrainHeight) {
             upwardsSpeed = 0;
             isInAir = false;
@@ -62,13 +76,13 @@ public class Player extends Entity {
 
     private void checkInputs() {
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-            if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
                 currentMoveSpeed = RUN_SPEED;
             } else {
                 currentMoveSpeed = MOVE_SPEED;
             }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-            if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
                 currentMoveSpeed = -RUN_SPEED;
             } else {
                 currentMoveSpeed = -MOVE_SPEED;

@@ -1,5 +1,6 @@
 package devengine;
 
+import entities.Entity;
 import terrains.Terrain;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
@@ -9,19 +10,23 @@ import java.util.List;
 
 import static loaders.Loader.loader;
 
+/**
+ * This class allows to create and manage all terrains.
+ */
 public class TerrainsManager {
 
-    private final int TERRAINS_GRID_SIZE = 2;
+    private final int TERRAINS_GRID_X_SIZE = 2; // Max number of possible Terrain objects along X axis
+    private final int TERRAINS_GRID_Z_SIZE = 2; // Max number of possible Terrain objects along Z axis
 
     private List<Terrain> terrainsList = new ArrayList<>();
-    private Terrain[][] terrainsGrid = new Terrain[2][2]; // First [] is for X axis. Second [] is for Z axis.
+    private Terrain[][] terrainsGrid = new Terrain[TERRAINS_GRID_X_SIZE][TERRAINS_GRID_Z_SIZE];
 
     public TerrainsManager() {
         createTerrains();
     }
 
     /**
-     * Get list of all terrains which is useful in loops.
+     * Get the list of all Terrain objects. It is useful in loops.
      *
      * @return List of all terrains
      */
@@ -33,19 +38,42 @@ public class TerrainsManager {
     }
 
     /**
-     * Get Terrain on which the object stands
+     * Get the Terrain on which the Entity object stands.
+     * If the Entity is out of bound of any Terrain then this methods returns null.
+     *
+     * @param entity Entity object
+     * @return Terrain on which the Entity object stands or null if the Entity's position is out of bound of any Terrain
+     */
+    public Terrain getTerrain(Entity entity) {
+        return getTerrainCommon(entity.getPosition().x, entity.getPosition().z);
+    }
+
+    /**
+     * Get the Terrain on which the object stands.
+     * If the (worldX, worldZ) position is out of bound of any Terrain then this methods returns null.
      *
      * @param worldX World X position of the object
      * @param worldZ World Z position of the object
-     * @return Terrain on which the object stands
+     * @return Terrain on which the object stands or null if the position is out of bound of any Terrain
      */
     public Terrain getTerrain(float worldX, float worldZ) {
+        return getTerrainCommon(worldX, worldZ);
+    }
+
+    /**
+     * Common functionality for getTerrain(Entity entity) and getTerrain(float worldX, float worldZ).
+     */
+    private Terrain getTerrainCommon(float worldX, float worldZ) {
         if (terrainsList.isEmpty()) {
             throw new RuntimeException("Terrains not created");
         }
         int gridX = (int) (worldX / Terrain.getSIZE());
         int gridZ = (int) (worldZ / Terrain.getSIZE());
-        return terrainsGrid[gridX][gridZ];
+        if (gridX < 0 || gridZ < 0 || gridX >= TERRAINS_GRID_X_SIZE || gridZ >= TERRAINS_GRID_Z_SIZE) {
+            return null;
+        } else {
+            return terrainsGrid[gridX][gridZ];
+        }
     }
 
     private void createTerrains() {

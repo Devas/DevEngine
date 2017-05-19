@@ -14,7 +14,10 @@ uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform vec3 lightPosition;
+
 uniform float useFakeLighting; // Only receives 0 or 1 so it acts like boolean
+uniform float textureAtlasSize;
+uniform vec2 textureAtlasOffsets;
 
 // TODO make uniform
 const float fogDensity = 0.007; // 0.0035
@@ -22,7 +25,8 @@ const float fogGradient = 1.5;  // 5.0
 
 void main(void) {
 
-    pass_textureCoords = textureCoords;
+    // If textureAtlasSize = 1 then this acts like single texture i.e. pass_textureCoords = textureCoords
+    pass_textureCoords = (textureCoords / textureAtlasSize) + textureAtlasOffsets;
 
     // MVP computations
     vec4 worldPosition = transformationMatrix * vec4(position, 1.0);

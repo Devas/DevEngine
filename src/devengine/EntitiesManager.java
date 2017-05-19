@@ -15,13 +15,16 @@ import java.util.Random;
 import static loaders.Loader.loader;
 
 /**
- * Creates and manages all needed entities
+ * This class allows to create and manage all entities.
+ * This class uses TerrainsManager class to initialize new Entity objects with proper position on the Terrain objects.
  */
 public class EntitiesManager {
 
     private TerrainsManager terrainsManager;
     private List<Entity> entities = new ArrayList<>();
     private Player playerEntity;
+
+    private Random random = new Random();
 
     public EntitiesManager(TerrainsManager terrainsManager) {
         this.terrainsManager = terrainsManager;
@@ -67,38 +70,44 @@ public class EntitiesManager {
 //            float z = random.nextFloat() * -340;
 //            entities.add(new Entity("box", boxStaticModel, new Vector3f(x, y, z), random.nextFloat() * 180f, random.nextFloat() * 180f, 0f, 1f));
 //        }
-
-
+//
 //        ModelData data = OBJFileLoader.loadOBJ("pack/Tree1");
 //        RawModel tree1 = loader.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
 //        TexturedModel tree1TexturedModel = new TexturedModel(tree1, new ModelTexture(loader.loadTexture("pack/tree")));
 //        Entity tree1Entity = new Entity("tree1", tree1TexturedModel, new Vector3f(0, 0, 0), 0f, 0f, 0f, 1f);
 
     private void createEntities() {
+        float size1 = random.nextFloat() * 0.1f + 0.6f;
+        float size2 = random.nextFloat() + 3.6f;
+
         TexturedModel tree = new TexturedModel(OBJLoader.loadObjModel("pack/tree", loader), new ModelTexture(loader.loadTexture("pack/tree")));
+        scatterOnAllTerrains(tree, size2, 2000);
+
         TexturedModel grass = new TexturedModel(OBJLoader.loadObjModel("pack/grassModel", loader), new ModelTexture(loader.loadTexture("pack/grassTexture")));
         grass.getTexture().setHasTransparency(true);
         grass.getTexture().setUseFakeLighting(true);
+        scatterOnAllTerrains(grass, 1, 2000);
+
         TexturedModel flower = new TexturedModel(OBJLoader.loadObjModel("pack/grassModel", loader), new ModelTexture(loader.loadTexture("pack/flower")));
         flower.getTexture().setHasTransparency(true);
         flower.getTexture().setUseFakeLighting(true);
-        TexturedModel fern = new TexturedModel(OBJLoader.loadObjModel("pack/fern", loader), new ModelTexture(loader.loadTexture("pack/fern")));
-        fern.getTexture().setHasTransparency(true);
+        scatterOnAllTerrains(flower, 1, 2000);
 
-        Random random = new Random();
+//        TexturedModel fern = new TexturedModel(OBJLoader.loadObjModel("pack/fern", loader), new ModelTexture(loader.loadTexture("pack/fern")));
+        TexturedModel fern = new TexturedModel(OBJLoader.loadObjModel("pack/fern", loader), new ModelTexture(loader.loadTexture("pack/fern_atlas")));
+        fern.getTexture().setHasTransparency(true);
+        fern.getTexture().setTextureAtlasSize(2); // add this line if using atlas texture
+        scatterOnAllTerrains(fern, 1, 2000);
+    }
+
+    private void scatterOnAllTerrains(TexturedModel texturedModel, float size, int numberOfEntities) {
         for (Terrain terrain : terrainsManager.getTerrains()) {
-            int numberOfEntities = 2000;
             for (int i = 0; i < numberOfEntities; i++) {
                 float x = terrain.getX() + (random.nextFloat() * Terrain.getSIZE());
                 float z = terrain.getZ() + (random.nextFloat() * Terrain.getSIZE());
                 float y = terrain.getHeightOfTerrain(x, z);
                 float angle = random.nextFloat() * 360;
-                float size1 = random.nextFloat() * 0.1f + 0.6f;
-                float size2 = random.nextFloat() + 3.6f;
-                entities.add(new Entity("tree", tree, new Vector3f(x, y, z), new Vector3f(0, angle, 0), size2));
-                entities.add(new Entity("grass", grass, new Vector3f(x, y, z), new Vector3f(0, angle, 0), 1));
-                entities.add(new Entity("flower", flower, new Vector3f(x, y, z), new Vector3f(0, angle, 0), 1));
-                entities.add(new Entity("fern", fern, new Vector3f(x, y, z), new Vector3f(0, angle, 0), 0.6f));
+                entities.add(new Entity("", texturedModel, new Vector3f(x, y, z), new Vector3f(0, angle, 0), size, random.nextInt(4)));
             }
         }
     }

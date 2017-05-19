@@ -2,19 +2,19 @@
 3D graphics engine built with Java and LWJGL
 
 ### Features:
-* loading .OBJ 3d models
-* batch rendering
-* terrain from heightmaps, terrain collision detection
-* textures, multitexturing, transparency
-* diffuse lighting, specular lighting, light presets
-* fog
-* controlling entities by mouse or keyboard
-* different cameras
+* Loading .OBJ 3d models
+* Batch rendering
+* Terrain generated from heightmaps, terrain collision detection
+* Textures, multitexturing, transparency, texture atlases, mipmapping
+* Diffuse lighting, specular lighting, light presets
+* Effects: fog
+* Entities controlled by mouse or keyboard
+* Different cameras
 
 ### Build
 Use VM options: -Djava.library.path=native/windows/
 
 ### Screenshots:
 <p align="center">
-  <img src="https://cloud.githubusercontent.com/assets/9119159/24869550/e32fd598-1e13-11e7-945e-90dc6fc1202e.png" width="500"/>
+  <img src="https://cloud.githubusercontent.com/assets/9119159/26228091/ee1e01aa-3c36-11e7-8d0a-890e885fd7b8.png" width="900"/>
 </p>

@@ -5,11 +5,14 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class Entity {
 
+    private String name;
     private TexturedModel model;
     private Vector3f position;
     private Vector3f rotation;
     private float scale;
-    private String name;
+
+    // Indicates which part of the atlas texture this entity should use. By default use top-left part of the texture.
+    private int textureAtlasIndex = 0;
 
     public Entity(String name, TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
         this.name = name;
@@ -17,6 +20,15 @@ public class Entity {
         this.position = position;
         this.rotation = rotation;
         this.scale = scale;
+    }
+
+    public Entity(String name, TexturedModel model, Vector3f position, Vector3f rotation, float scale, int textureAtlasIndex) {
+        this.name = name;
+        this.model = model;
+        this.position = position;
+        this.rotation = rotation;
+        this.scale = scale;
+        this.textureAtlasIndex = textureAtlasIndex;
     }
 
     public void increasePosition(float dx, float dy, float dz) {
@@ -29,6 +41,17 @@ public class Entity {
         rotation.x += dx;
         rotation.y += dy;
         rotation.z += dz;
+    }
+
+    // TODO these two f can be replaced with one f returning Vector2f
+    public float getTextureAtlasOffsetX() {
+        int column = textureAtlasIndex % model.getTexture().getTextureAtlasSize();
+        return (float) column / (float) model.getTexture().getTextureAtlasSize();
+    }
+
+    public float getTextureAtlasOffsetY() {
+        int row = textureAtlasIndex / model.getTexture().getTextureAtlasSize();
+        return (float) row / (float) model.getTexture().getTextureAtlasSize();
     }
 
     public String getName() {

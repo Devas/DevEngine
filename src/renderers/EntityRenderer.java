@@ -38,7 +38,7 @@ public class EntityRenderer {
             prepareTexturedModel(texturedModel);
             List<Entity> batch = entities.get(texturedModel);
             for (Entity entity : batch) {
-                loadModelMatrix(entity);
+                prepareInstance(entity);
                 GL11.glDrawElements(GL11.GL_TRIANGLES, texturedModel.getRawModel().getVertexCount(),
                         GL11.GL_UNSIGNED_INT, 0);
             }
@@ -46,20 +46,24 @@ public class EntityRenderer {
         }
     }
 
+    /**
+     * This method executes for every TexturedModel.
+     */
     private void prepareTexturedModel(TexturedModel texturedModel) {
         RawModel rawModel = texturedModel.getRawModel();
         GL30.glBindVertexArray(rawModel.getVaoID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
         GL20.glEnableVertexAttribArray(2);
-        ModelTexture modelTexture = texturedModel.getTexture();
-        if (modelTexture.isHasTransparency()) {
+        ModelTexture texture = texturedModel.getTexture();
+        shader.loadTextureAtlasSize(texture.getTextureAtlasSize());
+        if (texture.isHasTransparency()) {
             MasterRenderer.disableCulling();
         }
-        shader.loadShineVariables(modelTexture.getShineDamper(), modelTexture.getReflectivity());
-        shader.loadFakeLightingVariable(modelTexture.isUseFakeLighting());
+        shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
+        shader.loadFakeLightingVariable(texture.isUseFakeLighting());
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, modelTexture.getID());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getID());
     }
 
     private void unbindTexturedModel() {
@@ -70,10 +74,16 @@ public class EntityRenderer {
         GL30.glBindVertexArray(0);
     }
 
-    private void loadModelMatrix(Entity entity) {
-        Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation(),
-                entity.getScale());
+    /**
+     * This method executes for every instance of TexturedModel. It:
+     * -loads transformation matrix
+     * -loads texture atlas offsets
+     */
+    private void prepareInstance(Entity entity) {
+        Matrix4f transformationMatrix =
+                Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation(), entity.getScale());
         shader.loadTransformationMatrix(transformationMatrix);
+        shader.loadTextureAtlasOffsets(entity.getTextureAtlasOffsetX(), entity.getTextureAtlasOffsetY()); // TODO can be changed to f taking Vector2f
     }
 
 }

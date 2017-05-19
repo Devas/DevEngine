@@ -97,7 +97,7 @@ public class MasterRenderer {
         }
         // If there are no batches for that particular TexturedModel, we need to create new batch for that TexturedModel. Next we put this in HshMap.
         else {
-            List<Entity> newBatch = new ArrayList<Entity>();
+            List<Entity> newBatch = new ArrayList<>();
             newBatch.add(entity);
             entitiesMap.put(texturedModel, newBatch);
         }

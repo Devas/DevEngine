@@ -83,7 +83,7 @@ public class Terrain {
     }
 
     /**
-     * Get height of the Terrain
+     * Get height of the Terrain using barycentric interpolation.
      *
      * @param worldX X position in world-coordinates
      * @param worldZ Z position in world-coordinates
@@ -125,6 +125,12 @@ public class Terrain {
                     new Vector2f(xCoord, zCoord));
         }
         return result;
+//        TODO Simplification of the choosing of triangle in the end of getHeightOfTerrain()
+//        int var1 = xCoord <= (1 - zCoord) ? 0 : 1;
+//        return Maths.barycentricCoordsOnTriangle(new Vector3f(var1, heights[gridX + var1][gridZ], 0),
+//                new Vector3f(1, heights[gridX + 1][gridZ + var1], var1),
+//                new Vector3f(0, heights[gridX][gridZ + 1], 1),
+//                new Vector2f(xCoord, zCoord));﻿
     }
 
     private RawModel generateTerrain(String heightmap) {

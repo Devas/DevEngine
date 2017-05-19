@@ -1,44 +1,22 @@
 package textures;
 
-public class ModelTexture {
+/**
+ * Additional support for:
+ * <p>
+ * - Fake Lighting - if useFakeLighting field is set to true then it changes texture's normals to face upwards to mimic
+ * better lighting. This feature is useful only for small objects placed on the ground level (like grass for example).
+ * If true, it's executed in shader during rendering phase. Does not affect normals of the model.
+ * <p>
+ * - Texture Atlases - if textureAtlasSize field is set to 1 then the texture is a normal texture with a single image.
+ * Otherwise, if
+ */
+public class ModelTexture extends Texture {
 
-    private int textureID;
-
-    private float shineDamper = 1;
-    private float reflectivity = 0;
-    private boolean hasTransparency = false;
     private boolean useFakeLighting = false;
+    private int textureAtlasSize = 1;
 
     public ModelTexture(int id) {
-        this.textureID = id;
-    }
-
-    public int getID() {
-        return textureID;
-    }
-
-    public float getShineDamper() {
-        return shineDamper;
-    }
-
-    public void setShineDamper(float shineDamper) {
-        this.shineDamper = shineDamper;
-    }
-
-    public float getReflectivity() {
-        return reflectivity;
-    }
-
-    public void setReflectivity(float reflectivity) {
-        this.reflectivity = reflectivity;
-    }
-
-    public boolean isHasTransparency() {
-        return hasTransparency;
-    }
-
-    public void setHasTransparency(boolean hasTransparency) {
-        this.hasTransparency = hasTransparency;
+        super(id);
     }
 
     public boolean isUseFakeLighting() {
@@ -46,14 +24,24 @@ public class ModelTexture {
     }
 
     /**
-     * Change normals to face upwards to mimic better lighting.
-     * Useful only for small objects placed on the ground level (like grass for example).
-     * If true, it's executed in shader during rendering phase. Does not affect normals of the model.
-     *
-     * @param useFakeLighting
+     * @param useFakeLighting If true it changes texture's normals to face upwards to mimic better lighting.
      */
     public void setUseFakeLighting(boolean useFakeLighting) {
         this.useFakeLighting = useFakeLighting;
+    }
+
+    public int getTextureAtlasSize() {
+        return textureAtlasSize;
+    }
+
+    /**
+     * @param textureAtlasSize Number of rows and columns in texture's atlas. Cannot be less than 1.
+     */
+    public void setTextureAtlasSize(int textureAtlasSize) {
+        this.textureAtlasSize = textureAtlasSize;
+        if (this.textureAtlasSize < 1) {
+            this.textureAtlasSize = 1;
+        }
     }
 
 }

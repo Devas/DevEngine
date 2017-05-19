@@ -3,6 +3,7 @@ package shaders;
 import helpers.camera.Camera;
 import helpers.Light;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import toolbox.Maths;
 
@@ -20,6 +21,8 @@ public class StaticShader extends ShaderProgram {
     private int location_reflectivity;
     private int location_useFakeLighting;
     private int location_skyColour;
+    private int location_textureAtlasSize;
+    private int location_textureAtlasOffsets;
 
     public StaticShader() {
         super(VERTEX_FILE, FRAGMENT_FILE);
@@ -43,6 +46,8 @@ public class StaticShader extends ShaderProgram {
         location_reflectivity = super.getUniformLocation("reflectivity");
         location_useFakeLighting = super.getUniformLocation("useFakeLighting");
         location_skyColour = super.getUniformLocation("skyColour");
+        location_textureAtlasSize = super.getUniformLocation("textureAtlasSize");
+        location_textureAtlasOffsets = super.getUniformLocation("textureAtlasOffsets");
     }
 
     public void loadTransformationMatrix(Matrix4f matrix) {
@@ -74,6 +79,14 @@ public class StaticShader extends ShaderProgram {
 
     public void loadSkyColour(Vector3f skyColour) {
         super.loadVector(location_skyColour, skyColour);
+    }
+
+    public void loadTextureAtlasSize(int textureAtlasSize) {
+        super.loadFloat(location_textureAtlasSize, textureAtlasSize);
+    }
+
+    public void loadTextureAtlasOffsets(float xOffset, float yOffset) {
+        super.load2DVector(location_textureAtlasOffsets, new Vector2f(xOffset, yOffset));
     }
 
 }
