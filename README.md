@@ -16,5 +16,5 @@ Use VM options: -Djava.library.path=native/windows/
 
 ### Screenshots:
 <p align="center">
-  <img src="https://cloud.githubusercontent.com/assets/9119159/26228091/ee1e01aa-3c36-11e7-8d0a-890e885fd7b8.png" width="640"/>
+  <img src="https://cloud.githubusercontent.com/assets/9119159/26228091/ee1e01aa-3c36-11e7-8d0a-890e885fd7b8.png" width="900"/>
 </p>
