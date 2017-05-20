@@ -2,7 +2,10 @@ package models;
 
 import textures.ModelTexture;
 
-public class TexturedModel {
+/**
+ * This class combines a 3D model and a texture.
+ */
+public class TexturedModel { // TODO untextured model
 
     private RawModel rawModel;
     private ModelTexture texture;
@@ -19,4 +22,5 @@ public class TexturedModel {
     public ModelTexture getTexture() {
         return texture;
     }
+
 }

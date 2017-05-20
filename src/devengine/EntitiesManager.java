@@ -21,7 +21,7 @@ import static loaders.Loader.loader;
 public class EntitiesManager {
 
     private TerrainsManager terrainsManager;
-    private List<Entity> entities = new ArrayList<>();
+    private List<Entity> entities = new ArrayList<>(); // TODO HashMap <name, entity> ?
     private Player playerEntity;
 
     private Random random = new Random();
@@ -84,18 +84,18 @@ public class EntitiesManager {
         scatterOnAllTerrains(tree, size2, 2000);
 
         TexturedModel grass = new TexturedModel(OBJLoader.loadObjModel("pack/grassModel", loader), new ModelTexture(loader.loadTexture("pack/grassTexture")));
-        grass.getTexture().setHasTransparency(true);
+        grass.getRawModel().setFaceCulled(false);
         grass.getTexture().setUseFakeLighting(true);
         scatterOnAllTerrains(grass, 1, 2000);
 
         TexturedModel flower = new TexturedModel(OBJLoader.loadObjModel("pack/grassModel", loader), new ModelTexture(loader.loadTexture("pack/flower")));
-        flower.getTexture().setHasTransparency(true);
+        flower.getRawModel().setFaceCulled(false);
         flower.getTexture().setUseFakeLighting(true);
         scatterOnAllTerrains(flower, 1, 2000);
 
 //        TexturedModel fern = new TexturedModel(OBJLoader.loadObjModel("pack/fern", loader), new ModelTexture(loader.loadTexture("pack/fern")));
         TexturedModel fern = new TexturedModel(OBJLoader.loadObjModel("pack/fern", loader), new ModelTexture(loader.loadTexture("pack/fern_atlas")));
-        fern.getTexture().setHasTransparency(true);
+        fern.getRawModel().setFaceCulled(false);
         fern.getTexture().setTextureAtlasSize(2); // add this line if using atlas texture
         scatterOnAllTerrains(fern, 1, 2000);
     }

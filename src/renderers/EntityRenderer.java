@@ -57,8 +57,9 @@ public class EntityRenderer {
         GL20.glEnableVertexAttribArray(2);
         ModelTexture texture = texturedModel.getTexture();
         shader.loadTextureAtlasSize(texture.getTextureAtlasSize());
-        if (texture.isHasTransparency()) {
-            MasterRenderer.disableCulling();
+        // Face Culling is enabled by default but we want to disable it for some objects i.e. grass, foliage
+        if (!rawModel.isFaceCulled()) {
+            MasterRenderer.disableFaceCulling();
         }
         shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
         shader.loadFakeLightingVariable(texture.isUseFakeLighting());
@@ -66,8 +67,12 @@ public class EntityRenderer {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getID());
     }
 
+    /**
+     * This method also re-enables Face Culling to get maximum efficiency in case Face Culling was disabled
+     * in prepareTexturedModel() method.
+     */
     private void unbindTexturedModel() {
-        MasterRenderer.enableCulling();
+        MasterRenderer.enableFaceCulling();
         GL20.glDisableVertexAttribArray(0);
         GL20.glDisableVertexAttribArray(1);
         GL20.glDisableVertexAttribArray(2);

@@ -34,19 +34,28 @@ public class MasterRenderer {
     private Map<TexturedModel, List<Entity>> entitiesMap = new HashMap<>();
     private List<Terrain> terrains = new ArrayList<>();
 
+    /**
+     * Face Culling is enabled here to get maximum efficiency.
+     */
     public MasterRenderer() {
-        enableCulling();
+        enableFaceCulling();
         Matrix4f projectionMatrix = Maths.createProjectionMatrix();
         entityRenderer = new EntityRenderer(staticShader, projectionMatrix);
         terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
     }
 
-    public static void enableCulling() {
+    /**
+     * Face culling removes non-visible triangles of closed surfaces to get maximum efficiency. This method enables it.
+     */
+    public static void enableFaceCulling() {
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glCullFace(GL11.GL_BACK);
     }
 
-    public static void disableCulling() {
+    /**
+     * Face culling removes non-visible triangles of closed surfaces to get maximum efficiency. This method disables it.
+     */
+    public static void disableFaceCulling() {
         GL11.glDisable(GL11.GL_CULL_FACE);
     }
 

@@ -2,6 +2,7 @@ package devengine;
 
 import entities.Entity;
 import entities.Player;
+import guis.GuiRenderer;
 import helpers.Light;
 import helpers.camera.Camera;
 import helpers.camera.EntityCamera;
@@ -18,11 +19,13 @@ public class DevEngine {
 
     private static final TerrainsManager terrainsManager;
     private static final EntitiesManager entitiesManager;
+    private static final GuisManager guisManager;
 
     static {
         DisplayManager.createDisplay();
         terrainsManager = new TerrainsManager();
         entitiesManager = new EntitiesManager(terrainsManager);
+        guisManager = new GuisManager();
         Log.setVerbose(false);
     }
 
@@ -41,6 +44,8 @@ public class DevEngine {
 //        Camera camera = new TestCamera(player);
 
         // Main loop
+
+        GuiRenderer guiRenderer = new GuiRenderer(loader);
 
         boolean paused = false;
         while (!Display.isCloseRequested()) {
@@ -91,10 +96,13 @@ public class DevEngine {
 
             masterRenderer.render(light, camera);
 
+            guiRenderer.render(guisManager.getGuiTextures());
+
             DisplayManager.updateDisplay();
         }
 
         masterRenderer.cleanUp();
+        guiRenderer.cleanUp();
         loader.cleanUp();
         DisplayManager.closeDisplay();
     }

@@ -33,6 +33,9 @@ public enum Loader {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
     }
 
+    /**
+     * Used for models.
+     */
     public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
         int vaoID = createVAO();
         bindIndicesBuffer(indices);
@@ -41,6 +44,16 @@ public enum Loader {
         storeDataInAttributeList(2, 3, normals);        // Store 3-value-normals in third attribute
         unbindVAO();
         return new RawModel(vaoID, indices.length);
+    }
+
+    /**
+     * Used for GUI.
+     */
+    public RawModel loadToVAO(float[] positions) {
+        int vaoID = createVAO();
+        storeDataInAttributeList(0, 2, positions);      // Store 2-value-positions in first attribute
+        unbindVAO();
+        return new RawModel(vaoID, positions.length / 2);
     }
 
     // TODO extract texture and VAO loaders

@@ -14,6 +14,8 @@ public class Entity {
     // Indicates which part of the atlas texture this entity should use. By default use top-left part of the texture.
     private int textureAtlasIndex = 0;
 
+    // TODO Builder pattern http://stackoverflow.com/questions/328496/when-would-you-use-the-builder-pattern http://www.javaspecialists.eu/archive/Issue163.html
+
     public Entity(String name, TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
         this.name = name;
         this.model = model;

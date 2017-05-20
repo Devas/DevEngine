@@ -9,7 +9,6 @@ public class Texture {
 
     private float shineDamper = 1;
     private float reflectivity = 0;
-    private boolean hasTransparency = false; // TODO rename - if true object i.e. fern is visible from 2 sides
 
     public Texture(int id) {
         this.textureID = id;
@@ -33,14 +32,6 @@ public class Texture {
 
     public void setReflectivity(float reflectivity) {
         this.reflectivity = reflectivity;
-    }
-
-    public boolean isHasTransparency() {
-        return hasTransparency;
-    }
-
-    public void setHasTransparency(boolean hasTransparency) {
-        this.hasTransparency = hasTransparency;
     }
 
 }
