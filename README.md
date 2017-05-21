@@ -10,6 +10,7 @@
 * Effects: fog
 * Entities controlled by mouse or keyboard
 * Different cameras
+* GUI textures
 
 ### Build:
 Use VM options: -Djava.library.path=native/windows/

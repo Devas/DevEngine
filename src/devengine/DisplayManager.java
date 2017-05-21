@@ -9,27 +9,34 @@ import org.lwjgl.opengl.*;
  * -creating the display (by creating OpenGL context)
  * -updating the display
  * -closing the display
- *
+ * <p>
  * All methods are static because this class uses static methods from org.lwjgl.opengl.Display class.
- *
+ * <p>
  * This class has also getCurrentFrameDurationSeconds() method which is used to synchronize the movement of objects
  * with the time duration of the frame. The speed of objects' movement will not be affected at all by FPS.
  */
 public class DisplayManager {
 
+    // TODO add different resolutions support
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
+    private static final float ASPECTRATIO = (float) WIDTH / (float) HEIGHT;
+
     private static final int FPSCAP = 120;
 
     private static long lastFrameEndTime;
-    private static float currentFrameDurationSeconds;
 
+    private static float currentFrameDurationSeconds;
     public static int getWIDTH() {
         return WIDTH;
     }
 
     public static int getHEIGHT() {
         return HEIGHT;
+    }
+
+    public static float getASPECTRATIO() {
+        return ASPECTRATIO;
     }
 
     public static int getFPSCAP() {

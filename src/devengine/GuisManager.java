@@ -26,8 +26,12 @@ public class GuisManager {
     private void createGuiTextures() {
         GuiTexture health = new GuiTexture(loader.loadTexture("gui/health"), new Vector2f(0.75f, 0.9f), new Vector2f(0.2f, 0.2f));
         guiTextures.add(health);
-        GuiTexture health2 = new GuiTexture(loader.loadTexture("gui/map"), new Vector2f(-0.7f, -0.7f), new Vector2f(0.1f, 0.1f));
-        guiTextures.add(health2);
+
+        GuiTexture healthInPixels = new GuiTexture(loader.loadTexture("gui/health"), new Vector2f(0.f, 0.35f), 50, 50);
+        guiTextures.add(healthInPixels);
+
+        GuiTexture coords = new GuiTexture(loader.loadTexture("gui/coords"), new Vector2f(-0.7f, -0.7f), new Vector2f(0.5f, 0.5f));
+        guiTextures.add(coords);
     }
 
 }
