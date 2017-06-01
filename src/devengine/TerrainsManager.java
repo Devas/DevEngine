@@ -84,8 +84,10 @@ public class TerrainsManager {
         TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
         TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("terrain/blend_map_1024"));
 
-        Terrain terrain00 = new Terrain(0, 0, texturePack, blendMap, "heightmap_1_256.png"); // heightmap_2_1024.bmp
+        Terrain terrain00 = new Terrain(0, 0, texturePack, blendMap, "heightmap_1_256.png");
         Terrain terrain10 = new Terrain(1, 0, texturePack, blendMap, "heightmap_1_256.png");
+//        Terrain terrain00 = new Terrain(0, 0, texturePack, blendMap, "heightmap_2_1024.bmp");
+//        Terrain terrain10 = new Terrain(1, 0, texturePack, blendMap, "heightmap_2_1024.bmp");
         terrainsList.add(terrain00);
         terrainsList.add(terrain10);
         terrainsGrid[0][0] = terrain00;

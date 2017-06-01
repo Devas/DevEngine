@@ -1,5 +1,5 @@
 # DevEngine
-3D graphics engine built with Java and LWJGL
+3D graphics engine built with Java and LWJGL 2.9.3
 
 ### Features:
 * Loading .OBJ 3d models
@@ -10,10 +10,14 @@
 * Effects: fog
 * Entities controlled by mouse or keyboard
 * Different cameras
-* GUI textures
+* GUI
 
 ### Build:
-Use VM options: -Djava.library.path=native/windows/
+You have to use a VM option to specify a path to the natives:
+* Windows: -Djava.library.path=native/windows/
+* Linux: -Djava.library.path=native/linux/
+* Mac OS X: -Djava.library.path=native/macosx/
+* Solaris: -Djava.library.path=native/solaris/
 
 ### Screenshots:
 <p align="center">
