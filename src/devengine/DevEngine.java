@@ -15,13 +15,13 @@ import terrains.Terrain;
 
 import static loaders.Loader.loader;
 
-public class DevEngine {
+class DevEngine {
 
-    private static final TerrainsManager terrainsManager;
-    private static final EntitiesManager entitiesManager;
-    private static final GuisManager guisManager;
+    private final TerrainsManager terrainsManager;
+    private final EntitiesManager entitiesManager;
+    private final GuisManager guisManager;
 
-    static {
+    DevEngine() {
         DisplayManager.createDisplay();
         terrainsManager = new TerrainsManager();
         entitiesManager = new EntitiesManager(terrainsManager);
@@ -30,9 +30,9 @@ public class DevEngine {
     }
 
     /**
-     * Method with the engine's main loop
+     * Here is defined main loop.
      */
-    public static void main(String[] args) {
+    void run() {
 
         Light light = new Light(new Vector3f(3000, 2000, -2000), Light.Colour.WHITE.getColour()); // 20000,40000,20000
         MasterRenderer masterRenderer = new MasterRenderer();
@@ -43,7 +43,7 @@ public class DevEngine {
 //        Camera camera = new EntityCamera(player, new Vector3f(25, 10, 70));
 //        Camera camera = new TestCamera(player);
 
-        // Main loop
+        // DevEngineMain loop
 
         GuiRenderer guiRenderer = new GuiRenderer(loader);
 

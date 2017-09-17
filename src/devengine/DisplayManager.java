@@ -21,12 +21,10 @@ public class DisplayManager {
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
     private static final float ASPECTRATIO = (float) WIDTH / (float) HEIGHT;
-
     private static final int FPSCAP = 120;
-
     private static long lastFrameEndTime;
-
     private static float currentFrameDurationSeconds;
+
     public static int getWIDTH() {
         return WIDTH;
     }
