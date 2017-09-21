@@ -1,4 +1,4 @@
-package helpers.camera;
+package helpers.cameras;
 
 import entities.Entity;
 import org.lwjgl.input.Mouse;
@@ -6,16 +6,16 @@ import org.lwjgl.util.vector.Vector3f;
 import toolbox.Maths;
 
 /**
- * This camera follows a specified Entity.
+ * This cameras follows a specified Entity.
  * <p>
  * Mouse wheel - zoom
- * RMB - orbit camera around entity
+ * RMB - orbit cameras around entity
  */
 public class EntityCamera extends Camera {
 
     private static float CAM_POSITION_SHIFT = 0.4f;
     private static float CAM_ADJUSTMENT_SHIFT = 0.1f;
-    private static final float SENSITIVITY_FACTOR = 2f; // affects speed of camera when keys +/- are pressed
+    private static final float SENSITIVITY_FACTOR = 2f; // affects speed of cameras when keys +/- are pressed
 
     private static final float MIN_DISTANCE_FROM_ENTITY = 5f;
     private static final float MAX_DISTANCE_FROM_ENTITY = 500f;
@@ -24,7 +24,7 @@ public class EntityCamera extends Camera {
     private static final float X_AXIS_SPEED_FACTOR = 0.3f;
     private static final float Y_AXIS_SPEED_FACTOR = 0.3f;
 
-//    public boolean allowCameraZoom; // TODO enable / disable some features like zoom via configuration
+    //    public boolean allowCameraZoom; // TODO enable / disable some features like zoom via configuration
     public static boolean useProgressiveZoom = true; // If enabled you zoom in/out quicker the further you are away from the entity
 
     private static final float ENTITY_HEIGHT = 5f; // TODO Zoom in the centre of object, for now use dummy height
@@ -34,20 +34,35 @@ public class EntityCamera extends Camera {
 
     private Entity entity;
 
+    /**
+     * Default and initial position is (0,0,0).
+     *
+     * @param entity Entity followed by the cameras.
+     */
     public EntityCamera(Entity entity) {
         super();
         this.entity = entity;
     }
 
+    /**
+     * @param entity   Entity followed by the cameras.
+     * @param position Default and initial position.
+     */
     public EntityCamera(Entity entity, Vector3f position) {
         super(position);
         this.entity = entity;
     }
 
+    /**
+     * @return Entity followed by the cameras.
+     */
     public Entity getEntity() {
         return entity;
     }
 
+    /**
+     * @param entity Entity to be followed by the cameras.
+     */
     public void setEntity(Entity entity) { // TODO test it - allows to change followed entity dynamically
         this.entity = entity;
     }
@@ -62,7 +77,7 @@ public class EntityCamera extends Camera {
         calculateCameraPosition(horizontalDistance, verticalDistance);
         super.yaw = 180 - (entity.getRotation().y + angleAroundEntity);
 
-//        super.yaw = 180 - (angleAroundEntity); // TODO this won't rotate camera, only a player, usable only if pith = 90 (top-down view)
+//        super.yaw = 180 - (angleAroundEntity); // TODO this won't rotate cameras, only a player, usable only if pith = 90 (top-down view)
 
 //        super.restoreDefaultPosition();
 

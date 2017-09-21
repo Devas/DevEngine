@@ -1,10 +1,10 @@
-package helpers.camera;
+package helpers.cameras;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * This camera allows to view the world from flight perspective;
+ * This cameras allows to view the world from flight perspective;
  * <p>
  * WSAD - movement
  * QE - height
@@ -15,7 +15,7 @@ public class KeyboardCamera extends Camera {
 
     private static float CAM_POSITION_SHIFT = 0.4f;
     private static float CAM_ADJUSTMENT_SHIFT = 0.1f;
-    private static final float SENSITIVITY_FACTOR = 2.f; // affects speed of camera when keys +/- are pressed
+    private static final float SENSITIVITY_FACTOR = 2.f; // affects speed of cameras when keys +/- are pressed
 
     public KeyboardCamera() {
         super();

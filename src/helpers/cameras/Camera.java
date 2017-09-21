@@ -1,4 +1,4 @@
-package helpers.camera;
+package helpers.cameras;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
@@ -6,46 +6,63 @@ import toolbox.Maths;
 
 public abstract class Camera {
 
-    protected Vector3f position;
-    protected Vector3f defaultPosition;
-    protected float pitch;
-    protected float defaultPitch;
-    protected float yaw;
-    protected float defaultYaw;
-    protected float roll;
-    protected float defaultRoll;
+    Vector3f defaultPosition;
+    Vector3f position;
+    float defaultPitch;
+    float pitch;
+    float defaultYaw;
+    float yaw;
+    float defaultRoll;
+    float roll;
 
     public Camera() {
-        position = new Vector3f(0, 0, 0);
         defaultPosition = new Vector3f(0, 0, 0);
+        position = new Vector3f(0, 0, 0);
     }
 
     public Camera(Vector3f position) {
-        this.position = position;
         this.defaultPosition = new Vector3f(position);
+        this.position = position;
     }
 
-    /**
-     * Implement the movements of your camera. The input should change the fields of the Camera class.
-     * Use the input sources from org.lwjgl.input package.
-     */
-    public abstract void move();
+    public Vector3f getDefaultPosition() {
+        return defaultPosition;
+    }
 
     public Vector3f getPosition() {
         return position;
+    }
+
+    public float getDefaultPitch() {
+        return defaultPitch;
     }
 
     public float getPitch() {
         return pitch;
     }
 
+    public float getDefaultYaw() {
+        return defaultYaw;
+    }
+
     public float getYaw() {
         return yaw;
+    }
+
+    public float getDefaultRoll() {
+        return defaultRoll;
     }
 
     public float getRoll() {
         return roll;
     }
+
+    /**
+     * Implement the movements of your cameras.
+     * The input should change the fields of the Camera class.
+     * Use the input sources from org.lwjgl.input package.
+     */
+    public abstract void move();
 
     public void printCameraInfo() {
         System.out.println("Camera info:");
@@ -75,11 +92,11 @@ public abstract class Camera {
 
     protected void blockGoingBelowTerrain() {
         float TERRAIN_HEIGHT = 1.f;
-        if(position.y < TERRAIN_HEIGHT){
+        if (position.y < TERRAIN_HEIGHT) {
             position.y = TERRAIN_HEIGHT;
         }
     }
-    
+
     protected void limitPith(float minPitch, float maxPitch) {
         pitch = Maths.clamp(pitch, minPitch, maxPitch);
     }

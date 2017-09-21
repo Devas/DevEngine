@@ -1,6 +1,6 @@
 package renderers;
 
-import helpers.camera.Camera;
+import helpers.cameras.Camera;
 import entities.Entity;
 import helpers.Light;
 import models.TexturedModel;
@@ -143,16 +143,16 @@ public class MasterRenderer {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
     }
 
-    public static void enableFillPolygonMode() {
+    public void enableFillPolygonMode() {
         GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
     }
 
-    public static void enableLinePolygonMode() {
+    public void enableLinePolygonMode() {
         GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
 //        GL11.glLineWidth(2.0f); // change seize of line
     }
 
-    public static void enablePointPolygonMode() {
+    public void enablePointPolygonMode() {
         GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_POINT);
 //        GL11.glPointSize(1.4f); // change seize of point
     }

@@ -1,6 +1,6 @@
 package shaders;
 
-import helpers.camera.Camera;
+import helpers.cameras.Camera;
 import helpers.Light;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;

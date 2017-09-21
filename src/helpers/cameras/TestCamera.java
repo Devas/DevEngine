@@ -1,4 +1,4 @@
-package helpers.camera;
+package helpers.cameras;
 
 import devengine.DisplayManager;
 import entities.Player;

@@ -4,8 +4,8 @@ import entities.Entity;
 import entities.Player;
 import guis.GuiRenderer;
 import helpers.Light;
-import helpers.camera.Camera;
-import helpers.camera.EntityCamera;
+import helpers.cameras.Camera;
+import helpers.cameras.EntityCamera;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
@@ -20,12 +20,16 @@ class DevEngine {
     private final TerrainsManager terrainsManager;
     private final EntitiesManager entitiesManager;
     private final GuisManager guisManager;
+    private final MasterRenderer masterRenderer;
+    private final GuiRenderer guiRenderer;
 
     DevEngine() {
         DisplayManager.createDisplay();
         terrainsManager = new TerrainsManager();
         entitiesManager = new EntitiesManager(terrainsManager);
         guisManager = new GuisManager();
+        masterRenderer = new MasterRenderer();
+        guiRenderer = new GuiRenderer(loader);
         Log.setVerbose(false);
     }
 
@@ -35,17 +39,12 @@ class DevEngine {
     void run() {
 
         Light light = new Light(new Vector3f(3000, 2000, -2000), Light.Colour.WHITE.getColour()); // 20000,40000,20000
-        MasterRenderer masterRenderer = new MasterRenderer();
         Player player = entitiesManager.getPlayerEntity();
         Camera camera = new EntityCamera(player);
-//        Camera camera = new KeyboardCamera(new Vector3f(25, 10, 70));
-//        Camera camera = new FPVCamera(new Vector3f(25, 10, 70));
-//        Camera camera = new EntityCamera(player, new Vector3f(25, 10, 70));
-//        Camera camera = new TestCamera(player);
-
-        // DevEngineMain loop
-
-        GuiRenderer guiRenderer = new GuiRenderer(loader);
+//        Camera cameras = new KeyboardCamera(new Vector3f(25, 10, 70));
+//        Camera cameras = new FPVCamera(new Vector3f(25, 10, 70));
+//        Camera cameras = new EntityCamera(player, new Vector3f(25, 10, 70));
+//        Camera cameras = new TestCamera(player);
 
         boolean paused = false;
         while (!Display.isCloseRequested()) {
@@ -60,21 +59,21 @@ class DevEngine {
                 camera.printCameraInfo();
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
-                MasterRenderer.enableFillPolygonMode();
+                masterRenderer.enableFillPolygonMode();
             } else if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
-                MasterRenderer.enableLinePolygonMode();
+                masterRenderer.enableLinePolygonMode();
             } else if (Keyboard.isKeyDown(Keyboard.KEY_3)) {
-                MasterRenderer.enablePointPolygonMode();
+                masterRenderer.enablePointPolygonMode();
             }
 
             // Keyboard / FPV
 //            if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-//                camera.move();
+//                cameras.move();
 //            } else {
 //                player.move();
 //            }
 
-            // Movement of the player and the camera
+            // Movement of the player and the cameras
             player.move(terrainsManager.getTerrain(player));
             camera.move();
 
@@ -101,10 +100,14 @@ class DevEngine {
             DisplayManager.updateDisplay();
         }
 
+        clenUpAll();
+        DisplayManager.closeDisplay();
+    }
+
+    private void clenUpAll() {
         masterRenderer.cleanUp();
         guiRenderer.cleanUp();
         loader.cleanUp();
-        DisplayManager.closeDisplay();
     }
 
 }
