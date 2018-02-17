@@ -3,7 +3,7 @@ package helpers.cameras;
 import entities.Entity;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
-import toolbox.Maths;
+import utils.MathUtil;
 
 /**
  * This cameras follows a specified Entity.
@@ -152,12 +152,12 @@ public class EntityCamera extends Camera {
     }
 
     private void limitDistanceFromEntity() {
-        distanceFromEntity = Maths.clamp(distanceFromEntity, MIN_DISTANCE_FROM_ENTITY, MAX_DISTANCE_FROM_ENTITY);
+        distanceFromEntity = MathUtil.clamp(distanceFromEntity, MIN_DISTANCE_FROM_ENTITY, MAX_DISTANCE_FROM_ENTITY);
     }
 
     // Bugged
 //    private void limitAngleAroundEntity() {
-//        angleAroundEntity = Maths.clamp(angleAroundEntity, 60, 60);
+//        angleAroundEntity = MathUtil.clamp(angleAroundEntity, 60, 60);
 //    }
 
 }

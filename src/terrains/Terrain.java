@@ -5,7 +5,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
-import toolbox.Maths;
+import utils.MatrixUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -112,13 +112,13 @@ public class Terrain {
         // Every grid-square consists of 2 triangles, so detect the triangle and interpolate to get height
         float result;
         if (xCoord <= (1 - zCoord)) {
-            result = Maths.barycentricCoordsOnTriangle(
+            result = MatrixUtil.barycentricCoordsOnTriangle(
                     new Vector3f(0, heights[gridX][gridZ], 0),
                     new Vector3f(1, heights[gridX + 1][gridZ], 0),
                     new Vector3f(0, heights[gridX][gridZ + 1], 1),
                     new Vector2f(xCoord, zCoord));
         } else {
-            result = Maths.barycentricCoordsOnTriangle(
+            result = MatrixUtil.barycentricCoordsOnTriangle(
                     new Vector3f(1, heights[gridX + 1][gridZ], 0),
                     new Vector3f(1, heights[gridX + 1][gridZ + 1], 1),
                     new Vector3f(0, heights[gridX][gridZ + 1], 1),

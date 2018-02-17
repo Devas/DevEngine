@@ -1,8 +1,8 @@
 package renderers;
 
-import helpers.cameras.Camera;
 import entities.Entity;
 import helpers.Light;
+import helpers.cameras.Camera;
 import models.TexturedModel;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
@@ -10,7 +10,7 @@ import org.lwjgl.util.vector.Vector3f;
 import shaders.StaticShader;
 import shaders.TerrainShader;
 import terrains.Terrain;
-import toolbox.Maths;
+import utils.MatrixUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +39,7 @@ public class MasterRenderer {
      */
     public MasterRenderer() {
         enableFaceCulling();
-        Matrix4f projectionMatrix = Maths.createProjectionMatrix();
+        Matrix4f projectionMatrix = MatrixUtil.createProjectionMatrix();
         entityRenderer = new EntityRenderer(staticShader, projectionMatrix);
         terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
     }

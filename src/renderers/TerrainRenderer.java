@@ -10,7 +10,7 @@ import org.lwjgl.util.vector.Vector3f;
 import shaders.TerrainShader;
 import terrains.Terrain;
 import textures.TerrainTexturePack;
-import toolbox.Maths;
+import utils.MatrixUtil;
 
 import java.util.List;
 
@@ -70,7 +70,7 @@ public class TerrainRenderer {
     }
 
     private void loadModelMatrix(Terrain terrain) {
-        Matrix4f transformationMatrix = Maths.createTransformationMatrix(
+        Matrix4f transformationMatrix = MatrixUtil.createTransformationMatrix(
                 new Vector3f(terrain.getX(), 0, terrain.getZ()), new Vector3f(0, 0, 0), 1);
         shader.loadTransformationMatrix(transformationMatrix);
     }

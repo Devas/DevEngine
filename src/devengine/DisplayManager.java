@@ -18,8 +18,8 @@ import org.lwjgl.opengl.*;
 public class DisplayManager {
 
     // TODO add different resolutions support
-    private static final int WIDTH = 1280;
-    private static final int HEIGHT = 720;
+    private static final int WIDTH = 3840;
+    private static final int HEIGHT = 2160;
     private static final float ASPECTRATIO = (float) WIDTH / (float) HEIGHT;
     private static final int FPSCAP = 120;
     private static long lastFrameEndTime;

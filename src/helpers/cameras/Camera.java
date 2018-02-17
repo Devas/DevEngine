@@ -2,7 +2,7 @@ package helpers.cameras;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
-import toolbox.Maths;
+import utils.MathUtil;
 
 public abstract class Camera {
 
@@ -98,15 +98,15 @@ public abstract class Camera {
     }
 
     protected void limitPith(float minPitch, float maxPitch) {
-        pitch = Maths.clamp(pitch, minPitch, maxPitch);
+        pitch = MathUtil.clamp(pitch, minPitch, maxPitch);
     }
 
     protected void limitYaw(float minYaw, float maxYaw) {
-        yaw = Maths.clamp(yaw, minYaw, maxYaw);
+        yaw = MathUtil.clamp(yaw, minYaw, maxYaw);
     }
 
     protected void limitRoll(float minRoll, float maxRoll) {
-        roll = Maths.clamp(roll, minRoll, maxRoll);
+        roll = MathUtil.clamp(roll, minRoll, maxRoll);
     }
 
 }

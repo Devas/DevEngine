@@ -1,4 +1,4 @@
-package toolbox;
+package utils;
 
 import helpers.cameras.Camera;
 import org.lwjgl.opengl.Display;
@@ -6,7 +6,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-public class Maths {
+public class MatrixUtil {
 
     private static final float FOV = 70;
     private static final float NEAR_PLANE = 0.1f;
@@ -62,16 +62,6 @@ public class Maths {
         Vector3f negativeCameraPos = new Vector3f(-cameraPos.x, -cameraPos.y, -cameraPos.z);
         Matrix4f.translate(negativeCameraPos, viewMatrix, viewMatrix);
         return viewMatrix;
-    }
-
-    public static float clamp(float variable, float min, float max) {
-        if (variable > max) {
-            return max;
-        } else if (variable < min) {
-            return min;
-        } else {
-            return variable;
-        }
     }
 
     // An interpolation between two inputs (min, max) for a parameter (value) in the closed unit interval [0, 1]

@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import shaders.StaticShader;
 import textures.ModelTexture;
-import toolbox.Maths;
+import utils.MatrixUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -86,7 +86,7 @@ public class EntityRenderer {
      */
     private void prepareInstance(Entity entity) {
         Matrix4f transformationMatrix =
-                Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation(), entity.getScale());
+                MatrixUtil.createTransformationMatrix(entity.getPosition(), entity.getRotation(), entity.getScale());
         shader.loadTransformationMatrix(transformationMatrix);
         shader.loadTextureAtlasOffsets(entity.getTextureAtlasOffsetX(), entity.getTextureAtlasOffsetY()); // TODO can be changed to f taking Vector2f
     }
