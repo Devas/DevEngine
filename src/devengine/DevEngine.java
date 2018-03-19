@@ -1,5 +1,6 @@
 package devengine;
 
+import display.DisplayManager;
 import entities.Entity;
 import entities.Player;
 import guis.GuiRenderer;
@@ -49,20 +50,20 @@ class DevEngine {
         boolean paused = false;
         while (!Display.isCloseRequested()) {
 
-            if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-                break;
-            }
-            if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
-                paused = !paused;
-            }
-            if (Keyboard.isKeyDown(Keyboard.KEY_I)) {
-                camera.printCameraInfo();
-            }
-            if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
+            if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) break;
+
+            if (Keyboard.isKeyDown(Keyboard.KEY_F11)) DisplayManager.toggleFullscreen();
+            if (Keyboard.isKeyDown(Keyboard.KEY_F10)) DisplayManager.toggleVSync();
+
+            if (Keyboard.isKeyDown(Keyboard.KEY_P)) paused = !paused;
+
+            if (Keyboard.isKeyDown(Keyboard.KEY_I)) camera.printCameraInfo();
+
+            if (Keyboard.isKeyDown(Keyboard.KEY_F1)) {
                 masterRenderer.enableFillPolygonMode();
-            } else if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_F2)) {
                 masterRenderer.enableLinePolygonMode();
-            } else if (Keyboard.isKeyDown(Keyboard.KEY_3)) {
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_F3)) {
                 masterRenderer.enablePointPolygonMode();
             }
 

@@ -1,6 +1,6 @@
 package guis;
 
-import devengine.DisplayManager;
+import display.DisplayManager;
 import org.lwjgl.util.vector.Vector2f;
 
 public class GuiTexture {
@@ -20,7 +20,7 @@ public class GuiTexture {
     public GuiTexture(int id, Vector2f position, Vector2f scale) {
         this.textureID = id;
         this.position = position;
-        this.scale = new Vector2f(scale.x / DisplayManager.getASPECTRATIO(), scale.y); // TODO adding projection matrix in Maths?
+        this.scale = new Vector2f(scale.x / DisplayManager.ASPECT_RATIO, scale.y); // TODO adding projection matrix in Maths?
     }
 
     /**
@@ -34,8 +34,8 @@ public class GuiTexture {
     public GuiTexture(int id, Vector2f position, int widthInPixels, int heightInPixels) {
         this.textureID = id;
         this.position = position;
-        float scaleX = ((float) widthInPixels) / DisplayManager.getWIDTH();
-        float scaleY = ((float) heightInPixels) / DisplayManager.getHEIGHT();
+        float scaleX = ((float) widthInPixels) / DisplayManager.WIDTH;
+        float scaleY = ((float) heightInPixels) / DisplayManager.HEIGHT;
         this.scale = new Vector2f(scaleX, scaleY);
     }
 

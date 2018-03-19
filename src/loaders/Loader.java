@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Loader is enum because there should be only one object managing all vaos, vbos, textures
+ * Loader is enum because there should be only one object managing all VAOs, VBOs, textures
  */
 public enum Loader {
     loader;
@@ -34,26 +34,26 @@ public enum Loader {
     }
 
     /**
+     * Used for GUI textures.
+     */
+    public RawModel loadToVAO(float[] positions) {
+        int vaoID = createVAO();
+        storeDataInVertexAttributeArray(0, 2, positions);      // Store 2-value-positions in first attribute
+        unbindVAO();
+        return new RawModel(vaoID, positions.length / 2);
+    }
+
+    /**
      * Used for models.
      */
     public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
         int vaoID = createVAO();
         bindIndicesBuffer(indices);
-        storeDataInAttributeList(0, 3, positions);      // Store 3-value-positions in first attribute
-        storeDataInAttributeList(1, 2, textureCoords);  // Store 2-values-texture-coords in second attribute
-        storeDataInAttributeList(2, 3, normals);        // Store 3-value-normals in third attribute
+        storeDataInVertexAttributeArray(0, 3, positions);      // Store 3-value-positions in first attribute
+        storeDataInVertexAttributeArray(1, 2, textureCoords);  // Store 2-values-texture-coords in second attribute
+        storeDataInVertexAttributeArray(2, 3, normals);        // Store 3-value-normals in third attribute
         unbindVAO();
         return new RawModel(vaoID, indices.length);
-    }
-
-    /**
-     * Used for GUI.
-     */
-    public RawModel loadToVAO(float[] positions) {
-        int vaoID = createVAO();
-        storeDataInAttributeList(0, 2, positions);      // Store 2-value-positions in first attribute
-        unbindVAO();
-        return new RawModel(vaoID, positions.length / 2);
     }
 
     // TODO extract texture and VAO loaders
@@ -70,18 +70,20 @@ public enum Loader {
         return textureID;
     }
 
-    public void cleanUp() {
-        for (int vao : vaos) {
-            GL30.glDeleteVertexArrays(vao);
-        }
-        for (int vbo : vbos) {
-            GL15.glDeleteBuffers(vbo);
-        }
-        for (int texture : textures) {
-            GL11.glDeleteTextures(texture);
-        }
-    }
-
+    /**
+     * VAO (Vertex Array Object) consists of 16 (indexed from 0 to GL_MAX_VERTEX_ATTRIBS - 1) vertex attribute arrays
+     * (vertex arrays, attribute arrays, attribute list, slots).
+     * VAO does not store any data but stores references to the VBOs.
+     * VAOs have the usual creation, destruction, and binding functions:
+     * glGenVertexArrays, glDeleteVertexArrays, and glBindVertexArray.
+     * A newly-created VAO has array access disabled for all attributes.
+     * Array access is enabled by binding the VAO in question and calling: glEnableVertexAttribArray(GLuint index​).
+     * There is a similar glDisableVertexAttribArray function to disable an enabled array.
+     * <p/>
+     * This method creates VAO, binds it (activates, enables) and returns id of the created VAO.
+     *
+     * @return id of the created VAO
+     */
     private int createVAO() {
         int vaoID = GL30.glGenVertexArrays();
         vaos.add(vaoID);
@@ -89,16 +91,33 @@ public enum Loader {
         return vaoID;
     }
 
-    private void storeDataInAttributeList(int attributeNumber, int coordinateSize, float[] data) {
+    /**
+     * VBO (Vertex Buffer Object) is a buffer which is used to hold a vertex attribute array
+     * (vertex array, attribute array, attribute list, slot in VAO).
+     * <p/>
+     * This method creates VBO, binds it (activates, enables), stores data into VBO,
+     * puts VBO into active VAO, lastly unbinds VBO.
+     * <p/>
+     * More: glBindBuffer sets a global variable, then glVertexAttribPointer reads that global variable and stores it
+     * in VAO. Changing that global variable after it's been read doesn't affect VAO.
+     *
+     * @param vertexAttributeArrayIndex index of vertex attribute array in VAO where data will be stored
+     * @param coordinateSize length of vertex for example 3 for 3d vertices and 2 for 2d points for textures
+     * @param data data to store
+     */
+    private void storeDataInVertexAttributeArray(int vertexAttributeArrayIndex, int coordinateSize, float[] data) {
         int vboID = GL15.glGenBuffers();
         vbos.add(vboID);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
-        FloatBuffer buffer = storeDataInFloatBuffer(data);
+        FloatBuffer buffer = createFloatBufferFromData(data);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-        GL20.glVertexAttribPointer(attributeNumber, coordinateSize, GL11.GL_FLOAT, false, 0, 0);
+        GL20.glVertexAttribPointer(vertexAttributeArrayIndex, coordinateSize, GL11.GL_FLOAT, false, 0, 0L);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
     }
 
+    /**
+     * Unbinds bound VAO. glBindVertexArray(0) breaks the existing VAO binding.
+     */
     private void unbindVAO() {
         GL30.glBindVertexArray(0);
     }
@@ -107,22 +126,32 @@ public enum Loader {
         int vboID = GL15.glGenBuffers();
         vbos.add(vboID);
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboID);
-        IntBuffer buffer = storeDataInIntBuffer(indices);
+        IntBuffer buffer = createIntBufferFromData(indices);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
     }
 
-    private IntBuffer storeDataInIntBuffer(int[] data) {
-        IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
-        buffer.put(data);
-        buffer.flip();
-        return buffer;
+    /**
+     * Creates FloatBuffer object from float data. FloatBuffer object is flipped and prepared for reading.
+     *
+     * @param data float data
+     * @return flipped FloatBuffer object prepared for reading
+     */
+    FloatBuffer createFloatBufferFromData(float[] data) {
+        return BufferUtils.createFloatBuffer(data.length)
+                .put(data)
+                .flip();
     }
 
-    private FloatBuffer storeDataInFloatBuffer(float[] data) {
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length); // Creates direct, natively ordered buffer
-        buffer.put(data);
-        buffer.flip();
-        return buffer;
+    /**
+     * Creates IntBuffer object from int data. IntBuffer object is flipped and prepared for reading.
+     *
+     * @param data int data
+     * @return flipped IntBuffer object prepared for reading
+     */
+    IntBuffer createIntBufferFromData(int[] data) {
+        return BufferUtils.createIntBuffer(data.length)
+                .put(data)
+                .flip();
     }
 
     private void enableMipmap() {
@@ -135,4 +164,12 @@ public enum Loader {
         return GL11.glGetInteger(GL11.GL_MAX_TEXTURE_SIZE);
     }
 
+    /**
+     * Delete all VAOs, VBOs, textures.
+     */
+    public void cleanUp() {
+        for (int vao : vaos) GL30.glDeleteVertexArrays(vao);
+        for (int vbo : vbos) GL15.glDeleteBuffers(vbo);
+        for (int texture : textures) GL11.glDeleteTextures(texture);
+    }
 }

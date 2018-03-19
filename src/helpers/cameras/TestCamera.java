@@ -1,6 +1,6 @@
 package helpers.cameras;
 
-import devengine.DisplayManager;
+import display.DisplayManager;
 import entities.Player;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
