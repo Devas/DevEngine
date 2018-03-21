@@ -15,6 +15,8 @@ public class LoaderTests {
     private static final float[] FLOAT_DATA = {1.0f, 2.0f, 3.0f};
     private static final int[] INT_DATA = {1, 2, 3, 4, 5};
 
+    private final Loader loader = new Loader();
+
     @BeforeClass
     public void init() throws LWJGLException {
         Display.create(new PixelFormat());
@@ -26,10 +28,10 @@ public class LoaderTests {
     }
 
     public void shouldCreateFloatBufferWithTheSameSize() {
-        assertEquals(Loader.loader.createFloatBufferFromData(FLOAT_DATA).remaining(), FLOAT_DATA.length);
+        assertEquals(loader.createFloatBufferFromData(FLOAT_DATA).remaining(), FLOAT_DATA.length);
     }
 
     public void shouldCreateIntBufferWithTheSameSize() {
-        assertEquals(Loader.loader.createIntBufferFromData(INT_DATA).remaining(), INT_DATA.length);
+        assertEquals(loader.createIntBufferFromData(INT_DATA).remaining(), INT_DATA.length);
     }
 }

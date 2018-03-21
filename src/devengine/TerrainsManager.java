@@ -1,14 +1,13 @@
 package devengine;
 
 import entities.Entity;
+import loaders.Loader;
 import terrains.Terrain;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static loaders.Loader.loader;
 
 /**
  * This class allows to create and manage all terrains.
@@ -18,10 +17,12 @@ public class TerrainsManager {
     private final int TERRAINS_GRID_X_SIZE = 2; // Max number of possible Terrain objects along X axis
     private final int TERRAINS_GRID_Z_SIZE = 2; // Max number of possible Terrain objects along Z axis
 
+    private final Loader loader;
     private List<Terrain> terrainsList = new ArrayList<>();
     private Terrain[][] terrainsGrid = new Terrain[TERRAINS_GRID_X_SIZE][TERRAINS_GRID_Z_SIZE];
 
-    public TerrainsManager() {
+    public TerrainsManager(Loader loader) {
+        this.loader = loader;
         createTerrains();
     }
 
@@ -84,8 +85,8 @@ public class TerrainsManager {
         TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
         TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("terrain/blend_map_1024"));
 
-        Terrain terrain00 = new Terrain(0, 0, texturePack, blendMap, "heightmap_1_256.png");
-        Terrain terrain10 = new Terrain(1, 0, texturePack, blendMap, "heightmap_1_256.png");
+        Terrain terrain00 = new Terrain(loader, 0, 0, texturePack, blendMap, "heightmap_1_256.png"); // TODO TerrainLoader?
+        Terrain terrain10 = new Terrain(loader, 1, 0, texturePack, blendMap, "heightmap_1_256.png");
 //        Terrain terrain00 = new Terrain(0, 0, texturePack, blendMap, "heightmap_2_1024.bmp");
 //        Terrain terrain10 = new Terrain(1, 0, texturePack, blendMap, "heightmap_2_1024.bmp");
         terrainsList.add(terrain00);

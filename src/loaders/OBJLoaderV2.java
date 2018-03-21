@@ -14,7 +14,13 @@ import java.util.List;
 @SuppressWarnings("Duplicates")
 public class OBJLoaderV2 {
 
-    public static RawModel loadObjModel(String fileName, Loader loader) {
+    private final Loader loader;
+
+    public OBJLoaderV2(Loader loader) {
+        this.loader = loader;
+    }
+
+    public RawModel loadObjModel(String fileName) {
         FileReader fr = null;
         try {
             fr = new FileReader(new File("res/" + fileName + ".obj"));
@@ -85,7 +91,7 @@ public class OBJLoaderV2 {
         return loader.loadToVAO(verticesArray, texturesArray, normalsArray, indicesArray);
     }
 
-    private static void processVertex(String[] vertexData, List<Integer> indices,
+    private void processVertex(String[] vertexData, List<Integer> indices,
                                       List<Vector2f> textures, List<Vector3f> normals,
                                       float[] texturesArray, float[] normalsArray) {
         int currentVertexPointer = Integer.parseInt(vertexData[0]) - 1;
@@ -99,7 +105,7 @@ public class OBJLoaderV2 {
         normalsArray[currentVertexPointer * 3 + 2] = currentNorm.z;
     }
 
-//    private static void processVertex(String[] vertexData, List<Integer> indeces, List<Vector2f> textures, List<Vector3f> normals, float[] textureArray, float[] normalsArray) {
+//    private void processVertex(String[] vertexData, List<Integer> indeces, List<Vector2f> textures, List<Vector3f> normals, float[] textureArray, float[] normalsArray) {
 //        int currentVertexPointer = Integer.parseInt(vertexData[0]) - 1;
 //        indeces.add(currentVertexPointer);
 //        try {

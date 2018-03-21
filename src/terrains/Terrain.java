@@ -1,5 +1,6 @@
 package terrains;
 
+import loaders.Loader;
 import models.RawModel;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -12,8 +13,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static loaders.Loader.loader;
-
 public class Terrain {
 
     // The world is made up of a square grid where each square (Terrain) has edges of size Terrain.SIZE
@@ -21,14 +20,13 @@ public class Terrain {
     private static final float MAX_HEIGHT = 40f; // TODO settable in GUI
     private static final float MAX_PIXEL_COLOUR = 256 * 256 * 256;
 
-    // World position of the Terrain mesh
-    private float x;
-    private float z;
-
-    private RawModel model;
+    private final Loader loader;
+    private float x; // World X position of the Terrain mesh
+    private float z; // World Z position of the Terrain mesh
     private TerrainTexturePack texturePack;
     private TerrainTexture blendMap;
 
+    private RawModel model;
     // Array that stores all heights retrieved from Image. It's used in collision detection
     private float[][] heights;
 
@@ -36,15 +34,17 @@ public class Terrain {
      * We want the world to be made up of a grid of Terrain meshes.
      * Each Terrain is one square in the grid, and so each terrain has its own grid coordinates.
      * These gridX and gridZ ints are the coordinates of the terrain in the grid.
-     * Obviously these gridX and gridZ coordinates will always be integers(we can't have a gridX value of 2.5
+     * Obviously these gridX and gridZ coordinates will always be integers (we can't have a gridX value of 2.5
      * for example, because then the terrain would start half way along a grid square).
      * Using the gridX and gridZ coordinate and knowing the SIZE of each grid square, we can calculate
      * the actual world position of the terrain.
      *
+     * @param loader
      * @param gridX X coordinate of the Terrain in the grid
      * @param gridZ Z coordinate of the Terrain in the grid
      */
-    public Terrain(int gridX, int gridZ, TerrainTexturePack texturePack, TerrainTexture blendMap, String heightmap) {
+    public Terrain(Loader loader, int gridX, int gridZ, TerrainTexturePack texturePack, TerrainTexture blendMap, String heightmap) {
+        this.loader = loader;
         this.x = gridX * SIZE;
         this.z = gridZ * SIZE;
         this.texturePack = texturePack;

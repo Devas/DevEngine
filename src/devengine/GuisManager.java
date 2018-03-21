@@ -1,21 +1,22 @@
 package devengine;
 
 import guis.GuiTexture;
+import loaders.Loader;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static loaders.Loader.loader;
 
 /**
  * This class allows to create and manage all gui textures.
  */
 public class GuisManager {
 
+    private final Loader loader;
     private List<GuiTexture> guiTextures = new ArrayList<>();
 
-    public GuisManager() {
+    public GuisManager(Loader loader) {
+        this.loader = loader;
         createGuiTextures();
     }
 

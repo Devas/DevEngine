@@ -14,12 +14,17 @@ import java.util.List;
 @SuppressWarnings("Duplicates")
 public class OBJLoaderV3 {
 
+    private final Loader loader;
     private static int verticesNumber;
     private static int texturesNumber;
     private static int normalsNumber;
     private static int facesNumber;
 
-    public static RawModel loadObjModel(String fileName, Loader loader) {
+    public OBJLoaderV3(Loader loader) {
+        this.loader = loader;
+    }
+
+    public RawModel loadObjModel(String fileName) {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader(new File("res/" + fileName + ".obj"));
@@ -101,7 +106,7 @@ public class OBJLoaderV3 {
         return loader.loadToVAO(verticesArray, texturesArray, normalsArray, indicesArray);
     }
 
-    private static void processVertex(String[] vertexData, List<Integer> indicesList,
+    private void processVertex(String[] vertexData, List<Integer> indicesList,
                                       List<Vector2f> texturesList, List<Vector3f> normalsList,
                                       float[] texturesArray, float[] normalsArray) {
 
@@ -130,7 +135,7 @@ public class OBJLoaderV3 {
         normalsArray[currentVertexPointer * 3 + 2] = currentNormal.z;
     }
 
-    public static void printLastLoadInfo() {
+    public void printLastLoadInfo() {
         System.out.println("Vertices: " + verticesNumber);
         System.out.println("UV coordinates: " + texturesNumber);
         System.out.println("Normals: " + normalsNumber);

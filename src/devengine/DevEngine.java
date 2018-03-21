@@ -7,6 +7,8 @@ import guis.GuiRenderer;
 import helpers.Light;
 import helpers.cameras.Camera;
 import helpers.cameras.EntityCamera;
+import loaders.Loader;
+import loaders.OBJLoader;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
@@ -14,10 +16,10 @@ import org.newdawn.slick.util.Log;
 import renderers.MasterRenderer;
 import terrains.Terrain;
 
-import static loaders.Loader.loader;
-
 class DevEngine {
 
+    private final Loader loader;
+    private final OBJLoader objLoader;
     private final TerrainsManager terrainsManager;
     private final EntitiesManager entitiesManager;
     private final GuisManager guisManager;
@@ -26,9 +28,11 @@ class DevEngine {
 
     DevEngine() {
         DisplayManager.createDisplay();
-        terrainsManager = new TerrainsManager();
-        entitiesManager = new EntitiesManager(terrainsManager);
-        guisManager = new GuisManager();
+        loader = new Loader();
+        objLoader = new OBJLoader(loader);
+        terrainsManager = new TerrainsManager(loader);
+        entitiesManager = new EntitiesManager(loader, objLoader, terrainsManager);
+        guisManager = new GuisManager(loader);
         masterRenderer = new MasterRenderer();
         guiRenderer = new GuiRenderer(loader);
         Log.setVerbose(false);
