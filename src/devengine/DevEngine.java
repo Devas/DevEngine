@@ -4,7 +4,7 @@ import display.DisplayManager;
 import entities.Entity;
 import entities.Player;
 import guis.GuiRenderer;
-import helpers.Light;
+import lights.Light;
 import helpers.cameras.Camera;
 import helpers.cameras.EntityCamera;
 import loaders.Loader;
@@ -43,7 +43,7 @@ class DevEngine {
      */
     void run() {
 
-        Light light = new Light(new Vector3f(3000, 2000, -2000), Light.Colour.WHITE.getColour()); // 20000,40000,20000
+        Light light = new Light(new Vector3f(3000, 2000, -2000), Light.Colour.WHITE.getColour()); // 20000,40000,20000 // TODO LightManager
         Player player = entitiesManager.getPlayerEntity();
         Camera camera = new EntityCamera(player);
 //        Camera cameras = new KeyboardCamera(new Vector3f(25, 10, 70));

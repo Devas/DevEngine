@@ -14,6 +14,11 @@ import utils.MatrixUtil;
 
 import java.util.List;
 
+/**
+ * Renderer for terrains.
+ * <p>
+ * Does not use batch rendering. Terrains usually differ from each other so batch rendering is not used.
+ */
 public class TerrainRenderer {
 
     private TerrainShader shader;
@@ -26,6 +31,13 @@ public class TerrainRenderer {
         shader.stop();
     }
 
+    /**
+     * Render all terrains. Terrains usually differ from each other so batch rendering is not used.
+     * <p>
+     * Executed once per frame.
+     *
+     * @param terrains All terrains to be rendered
+     */
     public void render(List<Terrain> terrains) {
         for (Terrain terrain : terrains) {
             prepareTerrain(terrain);
@@ -35,6 +47,9 @@ public class TerrainRenderer {
         }
     }
 
+    /**
+     * This method executes for every Terrain.
+     */
     private void prepareTerrain(Terrain terrain) {
         RawModel rawModel = terrain.getModel();
         GL30.glBindVertexArray(rawModel.getVaoID());
@@ -53,13 +68,23 @@ public class TerrainRenderer {
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getBackgroundTexture().getID());
         GL13.glActiveTexture(GL13.GL_TEXTURE1);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getrTexture().getID());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getRTexture().getID());
         GL13.glActiveTexture(GL13.GL_TEXTURE2);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getgTexture().getID());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getGTexture().getID());
         GL13.glActiveTexture(GL13.GL_TEXTURE3);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getbTexture().getID());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getBTexture().getID());
         GL13.glActiveTexture(GL13.GL_TEXTURE4);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, terrain.getBlendMapTexture().getID());
+    }
+
+    /**
+     * This method executes for every instance of Terrain. It:
+     * -loads transformation matrix
+     * -loads texture atlas offsets
+     */
+    private void loadModelMatrix(Terrain terrain) {
+        Matrix4f transformationMatrix = MatrixUtil.createTransformationMatrix(terrain.getPosition(), new Vector3f(0, 0, 0), 1);
+        shader.loadTransformationMatrix(transformationMatrix);
     }
 
     private void unbindTerrainModel() {
@@ -68,11 +93,4 @@ public class TerrainRenderer {
         GL20.glDisableVertexAttribArray(2);
         GL30.glBindVertexArray(0);
     }
-
-    private void loadModelMatrix(Terrain terrain) {
-        Matrix4f transformationMatrix = MatrixUtil.createTransformationMatrix(
-                new Vector3f(terrain.getX(), 0, terrain.getZ()), new Vector3f(0, 0, 0), 1);
-        shader.loadTransformationMatrix(transformationMatrix);
-    }
-
 }

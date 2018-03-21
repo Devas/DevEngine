@@ -22,9 +22,10 @@ public class Terrain {
 
     private final Loader loader;
     private float x; // World X position of the Terrain mesh
+    private float y = 0; // Additional World Y position of the Terrain mesh used only in getPosition() to get nice vector
     private float z; // World Z position of the Terrain mesh
     private TerrainTexturePack texturePack;
-    private TerrainTexture blendMap;
+    private TerrainTexture blendMap; // texture used to blend all textures from texturePack
 
     private RawModel model;
     // Array that stores all heights retrieved from Image. It's used in collision detection
@@ -39,7 +40,7 @@ public class Terrain {
      * Using the gridX and gridZ coordinate and knowing the SIZE of each grid square, we can calculate
      * the actual world position of the terrain.
      *
-     * @param loader
+     * @param loader Loader used to load Terrain into VAO
      * @param gridX X coordinate of the Terrain in the grid
      * @param gridZ Z coordinate of the Terrain in the grid
      */
@@ -64,10 +65,21 @@ public class Terrain {
     }
 
     /**
+     * @return World Y position of the Terrain mesh
+     */
+    public float getY() {
+        return y;
+    }
+
+    /**
      * @return World Z position of the Terrain mesh
      */
     public float getZ() {
         return z;
+    }
+
+    public Vector3f getPosition() {
+        return new Vector3f(x, y, z);
     }
 
     public RawModel getModel() {

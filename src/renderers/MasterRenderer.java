@@ -1,7 +1,7 @@
 package renderers;
 
 import entities.Entity;
-import helpers.Light;
+import lights.Light;
 import helpers.cameras.Camera;
 import models.TexturedModel;
 import org.lwjgl.opengl.GL11;
@@ -19,12 +19,7 @@ import java.util.Map;
 
 public class MasterRenderer {
 
-    // TODO SkyColour class
-//    private static Vector3f skyColour = new Vector3f(0.5f, 0.5f, 0.5f); // heavy foggy
-    private static Vector3f skyColour = new Vector3f(0.6f, 0.78f, 0.76f); // atmospheric fog 1
-//    private static Vector3f skyColour = new Vector3f(0.5f, 0.6f, 0.7f); // atmospheric fog 2
-//    private static Vector3f skyColour = (new Vector3f(255, 197, 143)).normalise(null); // dust-desert fog
-
+    private Vector3f skyColour = SkyColour.ATMOSPHERIC_1.getSkyColour();
     private StaticShader staticShader = new StaticShader();
     private EntityRenderer entityRenderer;
 
@@ -104,7 +99,7 @@ public class MasterRenderer {
         if (batch != null) {
             batch.add(entity);
         }
-        // If there are no batches for that particular TexturedModel, we need to create new batch for that TexturedModel. Next we put this in HshMap.
+        // If there are no batches for that particular TexturedModel, we need to create new batch for that TexturedModel. Next we put this in Map.
         else {
             List<Entity> newBatch = new ArrayList<>();
             newBatch.add(entity);
@@ -128,16 +123,12 @@ public class MasterRenderer {
         terrainShader.cleanUp();
     }
 
-    public void printProcessingInfo() {
-        System.out.println("Last processing info:");
-        for (Map.Entry<TexturedModel, List<Entity>> entry : entitiesMap.entrySet()) {
-            System.out.println("Entity name: " + entry.getValue().get(0).getName() + " Number of entities: " + entry.getValue().size());
-        }
-        System.out.println();
-    }
-
+    /**
+     * Set clear colour. Enable Z-buffer testing. Clear colour of last frame and clear Z-buffer.
+     */
     private void prepare() {
         // TODO background color
+        // TODO can be called once?
         GL11.glClearColor(skyColour.x, skyColour.y, skyColour.z, 1.0f);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -149,12 +140,19 @@ public class MasterRenderer {
 
     public void enableLinePolygonMode() {
         GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
-//        GL11.glLineWidth(2.0f); // change seize of line
+        GL11.glLineWidth(2.0f);
     }
 
     public void enablePointPolygonMode() {
         GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_POINT);
-//        GL11.glPointSize(1.4f); // change seize of point
+        GL11.glPointSize(2.4f);
     }
 
+    public void printProcessingInfo() {
+        System.out.println("Last processing info:");
+        for (Map.Entry<TexturedModel, List<Entity>> entry : entitiesMap.entrySet()) {
+            System.out.println("Entity name: " + entry.getValue().get(0).getName() + " Number of entities: " + entry.getValue().size());
+        }
+        System.out.println();
+    }
 }

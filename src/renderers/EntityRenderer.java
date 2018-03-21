@@ -15,6 +15,11 @@ import utils.MatrixUtil;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Renderer for entities.
+ * <p>
+ * Uses batch rendering i.e. if entities use the same TexturedModel then some data (e.g textures) are loaded only once.
+ */
 public class EntityRenderer {
 
     private StaticShader shader;
@@ -31,7 +36,7 @@ public class EntityRenderer {
      * <p>
      * Executed once per frame.
      *
-     * @param entities All entities already grouped in Map
+     * @param entities All entities already grouped in Map to be rendered
      */
     public void render(Map<TexturedModel, List<Entity>> entities) {
         for (TexturedModel texturedModel : entities.keySet()) {
@@ -39,8 +44,7 @@ public class EntityRenderer {
             List<Entity> batch = entities.get(texturedModel);
             for (Entity entity : batch) {
                 prepareInstance(entity);
-                GL11.glDrawElements(GL11.GL_TRIANGLES, texturedModel.getRawModel().getVertexCount(),
-                        GL11.GL_UNSIGNED_INT, 0);
+                GL11.glDrawElements(GL11.GL_TRIANGLES, texturedModel.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
             }
             unbindTexturedModel();
         }
@@ -57,14 +61,24 @@ public class EntityRenderer {
         GL20.glEnableVertexAttribArray(2);
         ModelTexture texture = texturedModel.getTexture();
         shader.loadTextureAtlasSize(texture.getTextureAtlasSize());
-        // Face Culling is enabled by default but we want to disable it for some objects i.e. grass, foliage
-        if (!rawModel.isFaceCulled()) {
+        if (!rawModel.isFaceCulled()) { // Face Culling is enabled by default. Disable it for some objects i.e. grass, foliage
             MasterRenderer.disableFaceCulling();
         }
         shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
         shader.loadFakeLightingVariable(texture.isUseFakeLighting());
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getID());
+    }
+
+    /**
+     * This method executes for every Entity (instance of TexturedModel). It:
+     * -loads transformation matrix
+     * -loads texture atlas offsets
+     */
+    private void prepareInstance(Entity e) {
+        Matrix4f transformationMatrix = MatrixUtil.createTransformationMatrix(e.getPosition(), e.getRotation(), e.getScale());
+        shader.loadTransformationMatrix(transformationMatrix);
+        shader.loadTextureAtlasOffsets(e.getTextureAtlasOffsetX(), e.getTextureAtlasOffsetY()); // TODO can be changed to f taking Vector2f
     }
 
     /**
@@ -78,17 +92,4 @@ public class EntityRenderer {
         GL20.glDisableVertexAttribArray(2);
         GL30.glBindVertexArray(0);
     }
-
-    /**
-     * This method executes for every instance of TexturedModel. It:
-     * -loads transformation matrix
-     * -loads texture atlas offsets
-     */
-    private void prepareInstance(Entity entity) {
-        Matrix4f transformationMatrix =
-                MatrixUtil.createTransformationMatrix(entity.getPosition(), entity.getRotation(), entity.getScale());
-        shader.loadTransformationMatrix(transformationMatrix);
-        shader.loadTextureAtlasOffsets(entity.getTextureAtlasOffsetX(), entity.getTextureAtlasOffsetY()); // TODO can be changed to f taking Vector2f
-    }
-
 }
