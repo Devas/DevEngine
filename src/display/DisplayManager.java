@@ -32,9 +32,7 @@ public class DisplayManager {
     private static boolean isVSync = false;
 
     public static void createDisplay() {
-        ContextAttribs contextAttribs = new ContextAttribs(3, 2)
-                .withForwardCompatible(true)
-                .withProfileCore(true);
+        ContextAttribs contextAttribs = new ContextAttribs(3, 2).withForwardCompatible(true).withProfileCore(true);
 
         try {
             setDisplayMode(WIDTH, HEIGHT, isFullscreen);

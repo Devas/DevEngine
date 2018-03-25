@@ -1,6 +1,6 @@
 package devengine;
 
-import guis.GuiTexture;
+import textures.GuiTexture;
 import loaders.Loader;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -34,5 +34,4 @@ public class GuisManager {
         GuiTexture coords = new GuiTexture(loader.loadTexture("gui/coords"), new Vector2f(-0.7f, -0.7f), new Vector2f(0.5f, 0.5f));
         guiTextures.add(coords);
     }
-
 }

@@ -1,23 +1,34 @@
 package models;
 
+/**
+ * Stores information needed for OpenGL to render an object.
+ * <p>
+ * verticesToRenderCount is not exactly the same as number of vertices in model.
+ * Simple quad consisting of 2 triangles has 4 vertices in model but to render it we need 6 vertices (3 per triangle).
+ * This number is needed for glDrawArrays() or glDrawElements()
+ */
 public class RawModel {
 
     private int vaoID;
-    private int vertexCount;
+    private int verticesToRenderCount;
 
     private boolean faceCulled = true; // Face Culling is enabled by default for maximum efficiency // TODO can be moved also to TexturedModel or Texture
 
-    public RawModel(int vaoID, int vertexCount) {
+    /**
+     * @param vaoID id of VAO
+     * @param verticesToRenderCount number of vertices to render (not exactly the same as number of vertices in model)
+     */
+    public RawModel(int vaoID, int verticesToRenderCount) {
         this.vaoID = vaoID;
-        this.vertexCount = vertexCount;
+        this.verticesToRenderCount = verticesToRenderCount;
     }
 
     public int getVaoID() {
         return vaoID;
     }
 
-    public int getVertexCount() {
-        return vertexCount;
+    public int getVerticesToRenderCount() {
+        return verticesToRenderCount;
     }
 
     /**
@@ -41,5 +52,4 @@ public class RawModel {
     public void setFaceCulled(boolean faceCulling) {
         this.faceCulled = faceCulling;
     }
-
 }

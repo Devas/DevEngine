@@ -62,5 +62,4 @@ public class Vertex {
     public void setDuplicateVertex(Vertex duplicateVertex) {
         this.duplicateVertex = duplicateVertex;
     }
-
 }

@@ -20,7 +20,7 @@ public class OBJLoaderV2 {
         this.loader = loader;
     }
 
-    public RawModel loadObjModel(String fileName) {
+    public RawModel loadModel(String fileName) {
         FileReader fr = null;
         try {
             fr = new FileReader(new File("res/" + fileName + ".obj"));
@@ -122,5 +122,4 @@ public class OBJLoaderV2 {
 //        normalsArray[currentVertexPointer * 3 + 1] = currentNorm.y;
 //        normalsArray[currentVertexPointer * 3 + 2] = currentNorm.z;
 //    }
-
 }

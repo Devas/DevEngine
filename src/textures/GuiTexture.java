@@ -1,4 +1,4 @@
-package guis;
+package textures;
 
 import display.DisplayManager;
 import org.lwjgl.util.vector.Vector2f;
@@ -6,7 +6,6 @@ import org.lwjgl.util.vector.Vector2f;
 public class GuiTexture {
 
     private int textureID;
-
     private Vector2f position;
     private Vector2f scale;
 
@@ -50,5 +49,4 @@ public class GuiTexture {
     public Vector2f getScale() {
         return scale;
     }
-
 }

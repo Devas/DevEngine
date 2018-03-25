@@ -3,23 +3,26 @@ package devengine;
 import display.DisplayManager;
 import entities.Entity;
 import entities.Player;
-import guis.GuiRenderer;
-import lights.Light;
 import helpers.cameras.Camera;
 import helpers.cameras.EntityCamera;
+import lights.Light;
+import lights.LightColour;
 import loaders.Loader;
 import loaders.OBJLoader;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.util.Log;
+import renderers.GuiRenderer;
 import renderers.MasterRenderer;
 import terrains.Terrain;
+import terrains.TerrainLoader;
 
 class DevEngine {
 
     private final Loader loader;
     private final OBJLoader objLoader;
+    private final TerrainLoader terrainLoader;
     private final TerrainsManager terrainsManager;
     private final EntitiesManager entitiesManager;
     private final GuisManager guisManager;
@@ -30,7 +33,8 @@ class DevEngine {
         DisplayManager.createDisplay();
         loader = new Loader();
         objLoader = new OBJLoader(loader);
-        terrainsManager = new TerrainsManager(loader);
+        terrainLoader = new TerrainLoader(loader);
+        terrainsManager = new TerrainsManager(loader, terrainLoader);
         entitiesManager = new EntitiesManager(loader, objLoader, terrainsManager);
         guisManager = new GuisManager(loader);
         masterRenderer = new MasterRenderer();
@@ -43,7 +47,7 @@ class DevEngine {
      */
     void run() {
 
-        Light light = new Light(new Vector3f(3000, 2000, -2000), Light.Colour.WHITE.getColour()); // 20000,40000,20000 // TODO LightManager
+        Light light = new Light(new Vector3f(3000, 2000, -2000), LightColour.WHITE.getColour()); // 20000,40000,20000 // TODO LightManager
         Player player = entitiesManager.getPlayerEntity();
         Camera camera = new EntityCamera(player);
 //        Camera cameras = new KeyboardCamera(new Vector3f(25, 10, 70));
@@ -114,5 +118,4 @@ class DevEngine {
         guiRenderer.cleanUp();
         loader.cleanUp();
     }
-
 }

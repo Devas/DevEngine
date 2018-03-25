@@ -159,5 +159,4 @@ public class EntityCamera extends Camera {
 //    private void limitAngleAroundEntity() {
 //        angleAroundEntity = MathUtil.clamp(angleAroundEntity, 60, 60);
 //    }
-
 }

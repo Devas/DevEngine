@@ -1,14 +1,15 @@
 package renderers;
 
 import entities.Entity;
+import helpers.SkyColour;
 import lights.Light;
 import helpers.cameras.Camera;
 import models.TexturedModel;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import shaders.StaticShader;
-import shaders.TerrainShader;
+import shaders.entity.EntityShader;
+import shaders.terrain.TerrainShader;
 import terrains.Terrain;
 import utils.MatrixUtil;
 
@@ -20,7 +21,8 @@ import java.util.Map;
 public class MasterRenderer {
 
     private Vector3f skyColour = SkyColour.ATMOSPHERIC_1.getSkyColour();
-    private StaticShader staticShader = new StaticShader();
+
+    private EntityShader entityShader = new EntityShader();
     private EntityRenderer entityRenderer;
 
     private TerrainShader terrainShader = new TerrainShader();
@@ -30,12 +32,14 @@ public class MasterRenderer {
     private List<Terrain> terrains = new ArrayList<>();
 
     /**
-     * Face Culling is enabled here to get maximum efficiency.
+     * Creates main renderer consisting of entity and terrain renderers.
+     * Enables Face Culling for maximum efficiency.
+     * Creates projection matrix.
      */
     public MasterRenderer() {
         enableFaceCulling();
         Matrix4f projectionMatrix = MatrixUtil.createProjectionMatrix();
-        entityRenderer = new EntityRenderer(staticShader, projectionMatrix);
+        entityRenderer = new EntityRenderer(entityShader, projectionMatrix);
         terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
     }
 
@@ -65,14 +69,14 @@ public class MasterRenderer {
      * @param camera
      */
     public void render(Light light, Camera camera) {
-        prepare();
+        clearScreenAndZBuffer();
 
-        staticShader.start();
-        staticShader.loadSkyColour(skyColour);
-        staticShader.loadLight(light);
-        staticShader.loadViewMatrix(camera);
+        entityShader.start();
+        entityShader.loadSkyColour(skyColour);
+        entityShader.loadLight(light);
+        entityShader.loadViewMatrix(camera);
         entityRenderer.render(entitiesMap);
-        staticShader.stop();
+        entityShader.stop();
         entitiesMap.clear();
 
         terrainShader.start();
@@ -119,14 +123,14 @@ public class MasterRenderer {
     }
 
     public void cleanUp() {
-        staticShader.cleanUp();
+        entityShader.cleanUp();
         terrainShader.cleanUp();
     }
 
     /**
      * Set clear colour. Enable Z-buffer testing. Clear colour of last frame and clear Z-buffer.
      */
-    private void prepare() {
+    private void clearScreenAndZBuffer() {
         // TODO background color
         // TODO can be called once?
         GL11.glClearColor(skyColour.x, skyColour.y, skyColour.z, 1.0f);

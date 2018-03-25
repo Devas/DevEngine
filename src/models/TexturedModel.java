@@ -22,5 +22,4 @@ public class TexturedModel { // TODO untextured model
     public ModelTexture getTexture() {
         return texture;
     }
-
 }

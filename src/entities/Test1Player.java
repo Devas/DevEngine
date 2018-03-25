@@ -155,5 +155,4 @@ public class Test1Player extends Entity {
             jump();
         }
     }
-
 }

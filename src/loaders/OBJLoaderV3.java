@@ -24,7 +24,7 @@ public class OBJLoaderV3 {
         this.loader = loader;
     }
 
-    public RawModel loadObjModel(String fileName) {
+    public RawModel loadModel(String fileName) {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader(new File("res/" + fileName + ".obj"));
@@ -141,5 +141,4 @@ public class OBJLoaderV3 {
         System.out.println("Normals: " + normalsNumber);
         System.out.println("Faces: " + facesNumber);
     }
-
 }

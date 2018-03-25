@@ -27,49 +27,23 @@ public class KeyboardCamera extends Camera {
 
     @Override
     public void move() {
-        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-            position.z -= CAM_POSITION_SHIFT;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-            position.z += CAM_POSITION_SHIFT;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-            position.x -= CAM_POSITION_SHIFT;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-            position.x += CAM_POSITION_SHIFT;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-            position.y -= CAM_POSITION_SHIFT;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
-            position.y += CAM_POSITION_SHIFT;
-        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_W)) position.z -= CAM_POSITION_SHIFT;
+        if (Keyboard.isKeyDown(Keyboard.KEY_S)) position.z += CAM_POSITION_SHIFT;
+        if (Keyboard.isKeyDown(Keyboard.KEY_A)) position.x -= CAM_POSITION_SHIFT;
+        if (Keyboard.isKeyDown(Keyboard.KEY_D)) position.x += CAM_POSITION_SHIFT;
+        if (Keyboard.isKeyDown(Keyboard.KEY_Q)) position.y -= CAM_POSITION_SHIFT;
+        if (Keyboard.isKeyDown(Keyboard.KEY_E)) position.y += CAM_POSITION_SHIFT;
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD8)) {
-            pitch -= CAM_ADJUSTMENT_SHIFT;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD2)) {
-            pitch += CAM_ADJUSTMENT_SHIFT;
-        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD8)) pitch -= CAM_ADJUSTMENT_SHIFT;
+        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD2)) pitch += CAM_ADJUSTMENT_SHIFT;
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD4)) {
-            yaw -= CAM_ADJUSTMENT_SHIFT;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD6)) {
-            yaw += CAM_ADJUSTMENT_SHIFT;
-        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD4)) yaw -= CAM_ADJUSTMENT_SHIFT;
+        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD6)) yaw += CAM_ADJUSTMENT_SHIFT;
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD1)) {
-            roll -= CAM_ADJUSTMENT_SHIFT;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD3)) {
-            roll += CAM_ADJUSTMENT_SHIFT;
-        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD1)) roll -= CAM_ADJUSTMENT_SHIFT;
+        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD3)) roll += CAM_ADJUSTMENT_SHIFT;
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD0)) {
-            super.restoreDefaultPosition();
-        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD0)) super.restoreDefaultPosition();
 
         if (Keyboard.isKeyDown(Keyboard.KEY_ADD)) {
             CAM_POSITION_SHIFT *= SENSITIVITY_FACTOR;
@@ -80,5 +54,4 @@ public class KeyboardCamera extends Camera {
             CAM_ADJUSTMENT_SHIFT /= SENSITIVITY_FACTOR;
         }
     }
-
 }

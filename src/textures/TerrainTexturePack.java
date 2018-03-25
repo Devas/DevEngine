@@ -32,5 +32,4 @@ public class TerrainTexturePack {
     public TerrainTexture getBTexture() {
         return bTexture;
     }
-
 }

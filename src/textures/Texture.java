@@ -6,7 +6,6 @@ package textures;
 public class Texture {
 
     private int textureID;
-
     private float shineDamper = 1;
     private float reflectivity = 0;
 
@@ -33,5 +32,4 @@ public class Texture {
     public void setReflectivity(float reflectivity) {
         this.reflectivity = reflectivity;
     }
-
 }

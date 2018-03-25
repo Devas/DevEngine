@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import shaders.TerrainShader;
+import shaders.terrain.TerrainShader;
 import terrains.Terrain;
 import textures.TerrainTexturePack;
 import utils.MatrixUtil;
@@ -34,7 +34,7 @@ public class TerrainRenderer {
     /**
      * Render all terrains. Terrains usually differ from each other so batch rendering is not used.
      * <p>
-     * Executed once per frame.
+     * Executed once per frame. Uses index buffer in glDrawElements.
      *
      * @param terrains All terrains to be rendered
      */
@@ -42,7 +42,7 @@ public class TerrainRenderer {
         for (Terrain terrain : terrains) {
             prepareTerrain(terrain);
             loadModelMatrix(terrain);
-            GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+            GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVerticesToRenderCount(), GL11.GL_UNSIGNED_INT, 0);
             unbindTerrainModel();
         }
     }

@@ -11,6 +11,9 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Loads OBJ model into VAO.
+ */
 @SuppressWarnings("Duplicates")
 public class OBJLoader {
 
@@ -21,13 +24,19 @@ public class OBJLoader {
     private int facesNumber;
 
     /**
-     * @param loader loader to store obj model in VAO
+     * @param loader loader to store model in VAO
      */
     public OBJLoader(Loader loader) {
         this.loader = loader;
     }
 
-    public RawModel loadObjModel(String fileName) {
+    /**
+     * Loads OBJ model into VAO.
+     *
+     * @param fileName path to OBJ model
+     * @return loaded RawModel
+     */
+    public RawModel loadModel(String fileName) {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader(new File("res/" + fileName + ".obj"));
@@ -53,14 +62,20 @@ public class OBJLoader {
                 line = reader.readLine();
                 String[] lineSplit = line.split(" ");
                 if (line.startsWith("v ")) {
-                    Vector3f vertex = new Vector3f(Float.parseFloat(lineSplit[1]), Float.parseFloat(lineSplit[2]),
+                    Vector3f vertex = new Vector3f(
+                            Float.parseFloat(lineSplit[1]),
+                            Float.parseFloat(lineSplit[2]),
                             Float.parseFloat(lineSplit[3]));
                     verticesList.add(vertex);
                 } else if (line.startsWith("vt ")) {
-                    Vector2f texture = new Vector2f(Float.parseFloat(lineSplit[1]), Float.parseFloat(lineSplit[2]));
+                    Vector2f texture = new Vector2f(
+                            Float.parseFloat(lineSplit[1]),
+                            Float.parseFloat(lineSplit[2]));
                     texturesList.add(texture);
                 } else if (line.startsWith("vn ")) {
-                    Vector3f normal = new Vector3f(Float.parseFloat(lineSplit[1]), Float.parseFloat(lineSplit[2]),
+                    Vector3f normal = new Vector3f(
+                            Float.parseFloat(lineSplit[1]),
+                            Float.parseFloat(lineSplit[2]),
                             Float.parseFloat(lineSplit[3]));
                     normalsList.add(normal);
                 } else if (line.startsWith("f ")) {
@@ -109,12 +124,16 @@ public class OBJLoader {
         for (int i = 0; i < indicesList.size(); i++) {
             indicesArray[i] = indicesList.get(i);
         }
+
         return loader.loadToVAO(verticesArray, texturesArray, normalsArray, indicesArray);
     }
 
-    private void processVertex(String[] vertexData, List<Integer> indicesList,
-                                      List<Vector2f> texturesList, List<Vector3f> normalsList,
-                                      float[] texturesArray, float[] normalsArray) {
+    private void processVertex(String[] vertexData,
+                               List<Integer> indicesList,
+                               List<Vector2f> texturesList,
+                               List<Vector3f> normalsList,
+                               float[] texturesArray,
+                               float[] normalsArray) {
 
         int currentVertexPointer = Integer.parseInt(vertexData[0]) - 1; // -1 because .obj enumerates from 1
         indicesList.add(currentVertexPointer);
@@ -149,5 +168,4 @@ public class OBJLoader {
         System.out.println("Faces: " + facesNumber);
         System.out.println();
     }
-
 }

@@ -7,7 +7,7 @@ package textures;
  * better lighting. This feature is useful only for small objects placed on the ground level (like grass for example).
  * If true, it's executed in shader during rendering phase. Does not affect normals of the model.
  * <p>
- * - Texture Atlases - if textureAtlasSize field is set to 1 then the texture is a normal texture with a single image.
+ * - Texture Atlases - if textureAtlasSize is set to 1 then the texture is a normal texture with a single image.
  * Otherwise, if
  */
 public class ModelTexture extends Texture {
@@ -43,5 +43,4 @@ public class ModelTexture extends Texture {
             this.textureAtlasSize = 1;
         }
     }
-
 }

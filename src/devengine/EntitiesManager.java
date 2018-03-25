@@ -20,8 +20,8 @@ import java.util.Random;
 public class EntitiesManager {
 
     private final Loader loader;
-    private final TerrainsManager terrainsManager;
     private final OBJLoader objLoader;
+    private final TerrainsManager terrainsManager; // TODO can we remove this dependency just by passing list of Terrain to scatterOnAllTerrains()
     private List<Entity> entities = new ArrayList<>(); // TODO HashMap <name, entity> ?
     private Player playerEntity;
     private Random random = new Random();
@@ -45,7 +45,7 @@ public class EntitiesManager {
 //    private void createEntities() {
 ////        Entity entity = new Entity(dragonStaticModel, new Vector3f(0, 0, -20), 0, 0, 0, 1);
 //
-//        TexturedModel dragonStaticModel = new TexturedModel(objLoader.loadObjModel("dragon"), new ModelTexture(loader.loadTexture("stone_512")));
+//        TexturedModel dragonStaticModel = new TexturedModel(objLoader.loadModel("dragon"), new ModelTexture(loader.loadTexture("stone_512")));
 //        objLoader.printLastLoadInfo();
 //        dragonStaticModel.getTexture().setShineDamper(1000);
 //        dragonStaticModel.getTexture().setReflectivity(0.5f);
@@ -56,7 +56,7 @@ public class EntitiesManager {
 //            entities.add(new Entity("dragon", dragonStaticModel, new Vector3f(x, y, z), new Vector3f(random.nextFloat() * 180f, random.nextFloat() * 180f, 0f), 1f));
 //        }
 //
-//        TexturedModel stallStaticModel = new TexturedModel(objLoader.loadObjModel("stall"), new ModelTexture(loader.loadTexture("stall")));
+//        TexturedModel stallStaticModel = new TexturedModel(objLoader.loadModel("stall"), new ModelTexture(loader.loadTexture("stall")));
 //        objLoader.printLastLoadInfo();
 //        for (int i = 0; i < 20; i++) {
 //            float x = random.nextFloat() * 110 - 60;
@@ -65,7 +65,7 @@ public class EntitiesManager {
 //            entities.add(new Entity("stall", stallStaticModel, new Vector3f(x, y, z), new Vector3f(random.nextFloat() * 180f, random.nextFloat() * 180f, 0f), 1f));
 //        }
 //
-//        TexturedModel boxStaticModel = new TexturedModel(objLoader.loadObjModel("box"), new ModelTexture(loader.loadTexture("stone_512")));
+//        TexturedModel boxStaticModel = new TexturedModel(objLoader.loadModel("box"), new ModelTexture(loader.loadTexture("stone_512")));
 //        objLoader.printLastLoadInfo();
 //        for (int i = 0; i < 20; i++) {
 //            float x = random.nextFloat() * 120 - 70;
@@ -84,21 +84,21 @@ public class EntitiesManager {
         float size1 = random.nextFloat() * 0.1f + 0.6f;
         float size2 = random.nextFloat() + 3.6f;
 
-        TexturedModel tree = new TexturedModel(objLoader.loadObjModel("pack/tree"), new ModelTexture(loader.loadTexture("pack/tree"))); // TODO add ModelTextureLoader(Loader loader) f(){return new ModelTexture(loader.loadTexture)}
+        TexturedModel tree = new TexturedModel(objLoader.loadModel("pack/tree"), new ModelTexture(loader.loadTexture("pack/tree"))); // TODO add ModelTextureLoader(Loader loader) f(){return new ModelTexture(loader.loadTexture)}
         scatterOnAllTerrains(tree, size2, 2000);
 
-        TexturedModel grass = new TexturedModel(objLoader.loadObjModel("pack/grassModel"), new ModelTexture(loader.loadTexture("pack/grassTexture")));
+        TexturedModel grass = new TexturedModel(objLoader.loadModel("pack/grassModel"), new ModelTexture(loader.loadTexture("pack/grassTexture")));
         grass.getRawModel().setFaceCulled(false);
         grass.getTexture().setUseFakeLighting(true);
         scatterOnAllTerrains(grass, 1, 2000);
 
-        TexturedModel flower = new TexturedModel(objLoader.loadObjModel("pack/grassModel"), new ModelTexture(loader.loadTexture("pack/flower")));
+        TexturedModel flower = new TexturedModel(objLoader.loadModel("pack/grassModel"), new ModelTexture(loader.loadTexture("pack/flower")));
         flower.getRawModel().setFaceCulled(false);
         flower.getTexture().setUseFakeLighting(true);
         scatterOnAllTerrains(flower, 1, 2000);
 
-//        TexturedModel fern = new TexturedModel(objLoader.loadObjModel("pack/fern"), new ModelTexture(loader.loadTexture("pack/fern")));
-        TexturedModel fern = new TexturedModel(objLoader.loadObjModel("pack/fern"), new ModelTexture(loader.loadTexture("pack/fern_atlas")));
+//        TexturedModel fern = new TexturedModel(objLoader.loadModel("pack/fern"), new ModelTexture(loader.loadTexture("pack/fern")));
+        TexturedModel fern = new TexturedModel(objLoader.loadModel("pack/fern"), new ModelTexture(loader.loadTexture("pack/fern_atlas")));
         fern.getRawModel().setFaceCulled(false);
         fern.getTexture().setTextureAtlasSize(2); // add this line if using atlas texture
         scatterOnAllTerrains(fern, 1, 2000);
@@ -107,8 +107,8 @@ public class EntitiesManager {
     private void scatterOnAllTerrains(TexturedModel texturedModel, float size, int numberOfEntities) {
         for (Terrain terrain : terrainsManager.getTerrains()) {
             for (int i = 0; i < numberOfEntities; i++) {
-                float x = terrain.getX() + (random.nextFloat() * Terrain.getSIZE());
-                float z = terrain.getZ() + (random.nextFloat() * Terrain.getSIZE());
+                float x = terrain.getX() + (random.nextFloat() * terrain.getSize());
+                float z = terrain.getZ() + (random.nextFloat() * terrain.getSize());
                 float y = terrain.getHeightOfTerrain(x, z);
                 float angle = random.nextFloat() * 360;
                 entities.add(new Entity("", texturedModel, new Vector3f(x, y, z), new Vector3f(0, angle, 0), size, random.nextInt(4)));
@@ -117,8 +117,7 @@ public class EntitiesManager {
     }
 
     private void createPlayerEntity() {
-        TexturedModel player = new TexturedModel(objLoader.loadObjModel("pack/player"), new ModelTexture(loader.loadTexture("pack/player")));
+        TexturedModel player = new TexturedModel(objLoader.loadModel("pack/player"), new ModelTexture(loader.loadTexture("pack/player")));
         playerEntity = new Player("player", player, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), 1);
     }
-
 }

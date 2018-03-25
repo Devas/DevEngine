@@ -35,5 +35,4 @@ public class ModelData {
     public float getFurthestPoint() {
         return furthestPoint;
     }
-
 }

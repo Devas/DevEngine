@@ -108,5 +108,4 @@ public abstract class Camera {
     protected void limitRoll(float minRoll, float maxRoll) {
         roll = MathUtil.clamp(roll, minRoll, maxRoll);
     }
-
 }

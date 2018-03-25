@@ -1,4 +1,4 @@
-package renderers;
+package helpers;
 
 import org.lwjgl.util.vector.Vector3f;
 
@@ -14,7 +14,7 @@ public enum SkyColour {
 
     private Vector3f skyColour;
 
-    Vector3f getSkyColour() {
+    public Vector3f getSkyColour() {
         return skyColour;
     }
 

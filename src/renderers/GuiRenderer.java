@@ -1,5 +1,7 @@
-package guis;
+package renderers;
 
+import shaders.gui.GuiShader;
+import textures.GuiTexture;
 import loaders.Loader;
 import models.RawModel;
 import org.lwjgl.opengl.GL11;
@@ -22,6 +24,11 @@ public class GuiRenderer {
         shader = new GuiShader();
     }
 
+    /**
+     * For now it does not use index buffer but just normal glDrawArrays().
+     *
+     * @param guiTextures
+     */
     public void render(List<GuiTexture> guiTextures) {
         shader.start();
         GL30.glBindVertexArray(guiRawModel.getVaoID());
@@ -34,7 +41,7 @@ public class GuiRenderer {
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, guiTexture.getTextureID());
             Matrix4f matrix = MatrixUtil.createTransformationMatrix(guiTexture.getPosition(), guiTexture.getScale());
             shader.loadTransformation(matrix);
-            GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, guiRawModel.getVertexCount());
+            GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, guiRawModel.getVerticesToRenderCount());
         }
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_BLEND);
@@ -46,5 +53,4 @@ public class GuiRenderer {
     public void cleanUp() {
         shader.cleanUp();
     }
-
 }

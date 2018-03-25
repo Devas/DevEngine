@@ -3,6 +3,7 @@ package devengine;
 import entities.Entity;
 import loaders.Loader;
 import terrains.Terrain;
+import terrains.TerrainLoader;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 
@@ -18,11 +19,13 @@ public class TerrainsManager {
     private final int TERRAINS_GRID_Z_SIZE = 2; // Max number of possible Terrain objects along Z axis
 
     private final Loader loader;
+    private final TerrainLoader terrainLoader;
     private List<Terrain> terrainsList = new ArrayList<>();
     private Terrain[][] terrainsGrid = new Terrain[TERRAINS_GRID_X_SIZE][TERRAINS_GRID_Z_SIZE];
 
-    public TerrainsManager(Loader loader) {
+    public TerrainsManager(Loader loader, TerrainLoader terrainLoader) {
         this.loader = loader;
+        this.terrainLoader = terrainLoader;
         createTerrains();
     }
 
@@ -68,8 +71,8 @@ public class TerrainsManager {
         if (terrainsList.isEmpty()) {
             throw new RuntimeException("Terrains not created");
         }
-        int gridX = (int) (worldX / Terrain.getSIZE());
-        int gridZ = (int) (worldZ / Terrain.getSIZE());
+        int gridX = (int) (worldX / TerrainLoader.SIZE); // TODO move to Terrain - belongsToTerrain()? in order to remove SIZE dependency
+        int gridZ = (int) (worldZ / TerrainLoader.SIZE);
         if (gridX < 0 || gridZ < 0 || gridX >= TERRAINS_GRID_X_SIZE || gridZ >= TERRAINS_GRID_Z_SIZE) {
             return null;
         } else {
@@ -78,15 +81,15 @@ public class TerrainsManager {
     }
 
     private void createTerrains() {
-        TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("terrain/grass_natural_2048"));
+        TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("terrain/grass_natural_2048")); // "terrain/anime_grass_512"
         TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("terrain/mud_dry_256"));
         TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("terrain/grass_flowers_256"));
         TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("terrain/paving_256"));
         TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
         TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("terrain/blend_map_1024"));
 
-        Terrain terrain00 = new Terrain(loader, 0, 0, texturePack, blendMap, "heightmap_1_256.png"); // TODO TerrainLoader?
-        Terrain terrain10 = new Terrain(loader, 1, 0, texturePack, blendMap, "heightmap_1_256.png");
+        Terrain terrain00 = new Terrain(terrainLoader, 0, 0, texturePack, blendMap, "heightmap_1_256.png");
+        Terrain terrain10 = new Terrain(terrainLoader, 1, 0, texturePack, blendMap, "heightmap_1_256.png");
 //        Terrain terrain00 = new Terrain(0, 0, texturePack, blendMap, "heightmap_2_1024.bmp");
 //        Terrain terrain10 = new Terrain(1, 0, texturePack, blendMap, "heightmap_2_1024.bmp");
         terrainsList.add(terrain00);

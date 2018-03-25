@@ -91,5 +91,4 @@ public class FPVCamera extends Camera {
         ////Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2);
         //Mouse.setGrabbed(true);
     }
-
 }

@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
-import shaders.StaticShader;
+import shaders.entity.EntityShader;
 import textures.ModelTexture;
 import utils.MatrixUtil;
 
@@ -22,9 +22,9 @@ import java.util.Map;
  */
 public class EntityRenderer {
 
-    private StaticShader shader;
+    private EntityShader shader;
 
-    public EntityRenderer(StaticShader shader, Matrix4f projectionMatrix) {
+    public EntityRenderer(EntityShader shader, Matrix4f projectionMatrix) {
         this.shader = shader;
         shader.start();
         shader.loadProjectionMatrix(projectionMatrix);
@@ -34,7 +34,7 @@ public class EntityRenderer {
     /**
      * Render all entities which are already grouped in the entitiesMap.
      * <p>
-     * Executed once per frame.
+     * Executed once per frame. Uses index buffer in glDrawElements.
      *
      * @param entities All entities already grouped in Map to be rendered
      */
@@ -44,7 +44,7 @@ public class EntityRenderer {
             List<Entity> batch = entities.get(texturedModel);
             for (Entity entity : batch) {
                 prepareInstance(entity);
-                GL11.glDrawElements(GL11.GL_TRIANGLES, texturedModel.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+                GL11.glDrawElements(GL11.GL_TRIANGLES, texturedModel.getRawModel().getVerticesToRenderCount(), GL11.GL_UNSIGNED_INT, 0);
             }
             unbindTexturedModel();
         }
