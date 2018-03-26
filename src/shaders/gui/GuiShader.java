@@ -20,7 +20,7 @@ public class GuiShader extends ShaderProgram {
 
     @Override
     protected void bindAttributes() {
-        super.bindAttribute(0, "position");
+        super.bindVertexAttributeArrayToShaderVariable(0, "position");
     }
 
     @Override

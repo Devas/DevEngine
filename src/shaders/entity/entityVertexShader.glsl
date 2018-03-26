@@ -38,7 +38,7 @@ void main(void) {
     // Useful only for small objects placed on the ground level (like grass for example).
     // We could alter the normals to face up in Java before they are sent, but we if-check uniform which isn't slow.
     vec3 actualNormal = normal;
-    if(useFakeLighting > 0.5) {
+    if (useFakeLighting > 0.5) {
         actualNormal = vec3(0.0, 1.0, 0.0);
     }
 

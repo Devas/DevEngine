@@ -63,20 +63,6 @@ public class Loader {
         return new RawModel(vaoID, indices.length);
     }
 
-    // TODO extract texture and VAO loaders // TextureLoader?
-    public int loadTexture(String fileName) {
-        Texture texture = null;
-        try {
-            texture = TextureLoader.getTexture("PNG", new FileInputStream("res/" + fileName + ".png"));
-            enableMipmap();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        int textureID = texture.getTextureID();
-        textures.add(textureID);
-        return textureID;
-    }
-
     /**
      * VAO (Vertex Array Object) consists of 16 (indexed from 0 to GL_MAX_VERTEX_ATTRIBS - 1) vertex attribute arrays
      * (vertex arrays, attribute arrays, attribute list, slots).
@@ -168,6 +154,26 @@ public class Loader {
         return BufferUtils.createIntBuffer(data.length)
                 .put(data)
                 .flip();
+    }
+
+    /**
+     * Loads texture from file using SlickUtil and returns OpenGL id of loaded texture.
+     *
+     * @param texturePath path to texture in res folder, uses PNG
+     * @return id of loaded texture
+     */
+    // TODO extract texture and VAO loaders // TextureLoader?
+    public int loadTexture(String texturePath) {
+        Texture texture = null;
+        try {
+            texture = TextureLoader.getTexture("PNG", new FileInputStream("res/" + texturePath + ".png"));
+            enableMipmap();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int textureID = texture.getTextureID();
+        textures.add(textureID);
+        return textureID;
     }
 
     private void enableMipmap() {

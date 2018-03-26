@@ -6,7 +6,7 @@ in vec3 toLightVector;
 in vec3 toCameraVector;
 in float pixelVisibility;
 
-out vec4 out_Color;
+out vec4 out_colour;
 
 uniform sampler2D textureSampler;
 uniform vec3 lightColour;
@@ -20,7 +20,7 @@ void main(void) {
 
     // If the alpha value of the colour is smaller than 0.5 then don't render that pixel.
     // Transparent areas of textures won't be rendered.
-    if(colour.a < 0.5) {
+    if (colour.a < 0.5) {
         discard;
     }
 
@@ -42,11 +42,11 @@ void main(void) {
     vec3 specular = dampedSpecularFactor * reflectivity * lightColour;
 
     // Add lighting
-    out_Color = vec4(diffuse, 1.0) * colour + vec4(specular, 1.0);
+    out_colour = vec4(diffuse, 1.0) * colour + vec4(specular, 1.0);
 
     // Add fog
     // pixelVisibility is in range [0,1].
     // 0.0 means object is rendered using completely skyColour (object is totally covered with fog so cannot be seen).
     // 1.0 means object is rendered using completely outColour (object is uneffected by fog so it's totally visible).
-    out_Color = mix(vec4(skyColour, 1.0), out_Color, pixelVisibility);
+    out_colour = mix(vec4(skyColour, 1.0), out_colour, pixelVisibility);
 }

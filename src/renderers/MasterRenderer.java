@@ -122,6 +122,9 @@ public class MasterRenderer {
         terrains.add(terrain);
     }
 
+    /**
+     * Deletes shader programs.
+     */
     public void cleanUp() {
         entityShader.cleanUp();
         terrainShader.cleanUp();

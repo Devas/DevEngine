@@ -9,6 +9,7 @@ import lights.Light;
 import lights.LightColour;
 import loaders.Loader;
 import loaders.OBJLoader;
+import logger.OpenGLLogger;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
@@ -28,6 +29,7 @@ class DevEngine {
     private final GuisManager guisManager;
     private final MasterRenderer masterRenderer;
     private final GuiRenderer guiRenderer;
+    private final OpenGLLogger openGLLogger;
 
     DevEngine() {
         DisplayManager.createDisplay();
@@ -39,6 +41,7 @@ class DevEngine {
         guisManager = new GuisManager(loader);
         masterRenderer = new MasterRenderer();
         guiRenderer = new GuiRenderer(loader);
+        openGLLogger = new OpenGLLogger();
         Log.setVerbose(false);
     }
 

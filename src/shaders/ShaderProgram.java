@@ -12,6 +12,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 
+/**
+ * Abstract class with containing shader functionality.
+ */
 public abstract class ShaderProgram {
 
     protected static final String SHADERS_PATH = "src/shaders/";
@@ -22,9 +25,17 @@ public abstract class ShaderProgram {
 
     private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
-    protected ShaderProgram(String vertexFile, String fragmentFile) {
-        vertexShaderID = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
-        fragmentShaderID = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
+    /**
+     * Creates generic shader program.
+     * <p>
+     * Loads vertex shader and fragment shader from files.
+     *
+     * @param vertexShaderPath path to vertex shader file
+     * @param fragmentShaderPath path to fragment shader file
+     */
+    protected ShaderProgram(String vertexShaderPath, String fragmentShaderPath) {
+        vertexShaderID = loadShader(vertexShaderPath, GL20.GL_VERTEX_SHADER);
+        fragmentShaderID = loadShader(fragmentShaderPath, GL20.GL_FRAGMENT_SHADER);
         programID = GL20.glCreateProgram();
         GL20.glAttachShader(programID, vertexShaderID);
         GL20.glAttachShader(programID, fragmentShaderID);
@@ -38,8 +49,34 @@ public abstract class ShaderProgram {
         GL20.glDeleteShader(fragmentShaderID);
     }
 
+    /**
+     * To be implemented in child class using bindVertexAttributeArrayToShaderVariable().
+     */
+    protected abstract void bindAttributes();
+
+    /**
+     * To be implemented in child class using getUniformLocation().
+     */
     protected abstract void getAllUniformLocations();
 
+    /**
+     * Use it when implementing bindAttributes() in child class.
+     * <p>
+     * Binds specified vertex attribute array into specified shader variable.
+     *
+     * @param vertexAttributeArrayIndex index of vertex attribute array in VAO which we want bind into shader
+     * @param shaderVariableName name of variable in shader into which specified vertex attribute array will be bound
+     */
+    protected void bindVertexAttributeArrayToShaderVariable(int vertexAttributeArrayIndex, String shaderVariableName) {
+        GL20.glBindAttribLocation(programID, vertexAttributeArrayIndex, shaderVariableName);
+    }
+
+    /**
+     * Use it when implementing getAllUniformLocations() in child class.
+     *
+     * @param uniformName
+     * @return
+     */
     protected int getUniformLocation(String uniformName) {
         return GL20.glGetUniformLocation(programID, uniformName);
     }
@@ -55,12 +92,6 @@ public abstract class ShaderProgram {
     public void cleanUp() {
         stop();
         GL20.glDeleteProgram(programID);
-    }
-
-    protected abstract void bindAttributes();
-
-    protected void bindAttribute(int attribute, String variableName) {
-        GL20.glBindAttribLocation(programID, attribute, variableName);
     }
 
     protected void loadInt(int location, int value) {
@@ -93,7 +124,14 @@ public abstract class ShaderProgram {
         GL20.glUniformMatrix4(location, false, matrixBuffer);
     }
 
-    private static int loadShader(String file, int type) {
+    /**
+     * Loads shader of specified type (GL_VERTEX_SHADER or GL_FRAGMENT_SHADER) from file.
+     *
+     * @param file path to shader file
+     * @param type type of shader (GL_VERTEX_SHADER or GL_FRAGMENT_SHADER)
+     * @return id of loaded shader
+     */
+    private int loadShader(String file, int type) { // TODO extract to ShaderLoader?
         StringBuilder shaderSource = new StringBuilder();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -115,5 +153,12 @@ public abstract class ShaderProgram {
             System.exit(-1);
         }
         return shaderID;
+    }
+
+    public void printShaderStats() {
+        System.out.println("GL_SHADING_LANGUAGE_VERSION:" + GL11.glGetString(GL20.GL_SHADING_LANGUAGE_VERSION));
+        GL20.glGetShaderInfoLog(fragmentShaderID, 1000);
+        GL20.glGetShaderInfoLog(vertexShaderID, 1000);
+        GL20.glGetProgramInfoLog(programID, 1000);
     }
 }
