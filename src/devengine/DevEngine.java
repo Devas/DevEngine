@@ -8,7 +8,8 @@ import helpers.cameras.EntityCamera;
 import lights.Light;
 import lights.LightColour;
 import loaders.Loader;
-import loaders.OBJLoader;
+import loaders.TextureLoader;
+import loaders.obj.OBJLoader;
 import logger.OpenGLLogger;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -22,6 +23,7 @@ import terrains.TerrainLoader;
 class DevEngine {
 
     private final Loader loader;
+    private final TextureLoader textureLoader;
     private final OBJLoader objLoader;
     private final TerrainLoader terrainLoader;
     private final TerrainsManager terrainsManager;
@@ -34,11 +36,12 @@ class DevEngine {
     DevEngine() {
         DisplayManager.createDisplay();
         loader = new Loader();
+        textureLoader = new TextureLoader();
         objLoader = new OBJLoader(loader);
         terrainLoader = new TerrainLoader(loader);
-        terrainsManager = new TerrainsManager(loader, terrainLoader);
-        entitiesManager = new EntitiesManager(loader, objLoader, terrainsManager);
-        guisManager = new GuisManager(loader);
+        terrainsManager = new TerrainsManager(textureLoader, terrainLoader);
+        entitiesManager = new EntitiesManager(textureLoader, objLoader, terrainsManager);
+        guisManager = new GuisManager(textureLoader);
         masterRenderer = new MasterRenderer();
         guiRenderer = new GuiRenderer(loader);
         openGLLogger = new OpenGLLogger();
@@ -120,5 +123,6 @@ class DevEngine {
         masterRenderer.cleanUp();
         guiRenderer.cleanUp();
         loader.cleanUp();
+        textureLoader.cleanUp();
     }
 }

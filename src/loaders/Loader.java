@@ -2,12 +2,11 @@ package loaders;
 
 import models.RawModel;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.*;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -16,21 +15,11 @@ import java.util.List;
 /**
  * Loads data to OpenGl.
  */
+// TODO rename to VAOLoader?
 public class Loader {
-
-    private static final float MIPMAP_FACTOR = -0.5f; // the bigger number the less resolution of rendered texture
 
     private List<Integer> vaos = new ArrayList<>();
     private List<Integer> vbos = new ArrayList<>();
-    private List<Integer> textures = new ArrayList<>();
-
-    /**
-     * Make sure textures will be tiled properly by repeating
-     */
-    public Loader() {
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
-    }
 
     /**
      * Used for GUI.
@@ -157,41 +146,14 @@ public class Loader {
     }
 
     /**
-     * Loads texture from file using SlickUtil and returns OpenGL id of loaded texture.
-     *
-     * @param texturePath path to texture in res folder, uses PNG
-     * @return id of loaded texture
-     */
-    // TODO extract texture and VAO loaders // TextureLoader?
-    public int loadTexture(String texturePath) {
-        Texture texture = null;
-        try {
-            texture = TextureLoader.getTexture("PNG", new FileInputStream("res/" + texturePath + ".png"));
-            enableMipmap();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        int textureID = texture.getTextureID();
-        textures.add(textureID);
-        return textureID;
-    }
-
-    private void enableMipmap() {
-        GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
-        GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, MIPMAP_FACTOR);
-    }
-
-    private int getMaxTextureSize() {
-        return GL11.glGetInteger(GL11.GL_MAX_TEXTURE_SIZE);
-    }
-
-    /**
-     * Delete all VAOs, VBOs, textures.
+     * Delete all VAOs, VBOs.
      */
     public void cleanUp() {
-        for (int vao : vaos) GL30.glDeleteVertexArrays(vao);
-        for (int vbo : vbos) GL15.glDeleteBuffers(vbo);
-        for (int texture : textures) GL11.glDeleteTextures(texture);
+        for (Integer vao : vaos) {
+            GL30.glDeleteVertexArrays(vao);
+        }
+        for (Integer vbo : vbos) {
+            GL15.glDeleteBuffers(vbo);
+        }
     }
 }

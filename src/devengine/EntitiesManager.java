@@ -2,8 +2,8 @@ package devengine;
 
 import entities.Entity;
 import entities.Player;
-import loaders.Loader;
-import loaders.OBJLoader;
+import loaders.TextureLoader;
+import loaders.obj.OBJLoader;
 import models.TexturedModel;
 import org.lwjgl.util.vector.Vector3f;
 import terrains.Terrain;
@@ -19,15 +19,15 @@ import java.util.Random;
  */
 public class EntitiesManager {
 
-    private final Loader loader;
+    private final TextureLoader textureLoader;
     private final OBJLoader objLoader;
     private final TerrainsManager terrainsManager; // TODO can we remove this dependency just by passing list of Terrain to scatterOnAllTerrains()
     private List<Entity> entities = new ArrayList<>(); // TODO HashMap <name, entity> ?
     private Player playerEntity;
     private Random random = new Random();
 
-    public EntitiesManager(Loader loader, OBJLoader objLoader, TerrainsManager terrainsManager) {
-        this.loader = loader;
+    public EntitiesManager(TextureLoader textureLoader, OBJLoader objLoader, TerrainsManager terrainsManager) {
+        this.textureLoader = textureLoader;
         this.objLoader = objLoader;
         this.terrainsManager = terrainsManager;
         createEntities();
@@ -45,7 +45,7 @@ public class EntitiesManager {
 //    private void createEntities() {
 ////        Entity entity = new Entity(dragonStaticModel, new Vector3f(0, 0, -20), 0, 0, 0, 1);
 //
-//        TexturedModel dragonStaticModel = new TexturedModel(objLoader.loadModel("dragon"), new ModelTexture(loader.loadTexture("stone_512")));
+//        TexturedModel dragonStaticModel = new TexturedModel(objLoader.loadModel("dragon"), new ModelTexture(textureLoader.load("stone_512")));
 //        objLoader.printLastLoadInfo();
 //        dragonStaticModel.getTexture().setShineDamper(1000);
 //        dragonStaticModel.getTexture().setReflectivity(0.5f);
@@ -56,7 +56,7 @@ public class EntitiesManager {
 //            entities.add(new Entity("dragon", dragonStaticModel, new Vector3f(x, y, z), new Vector3f(random.nextFloat() * 180f, random.nextFloat() * 180f, 0f), 1f));
 //        }
 //
-//        TexturedModel stallStaticModel = new TexturedModel(objLoader.loadModel("stall"), new ModelTexture(loader.loadTexture("stall")));
+//        TexturedModel stallStaticModel = new TexturedModel(objLoader.loadModel("stall"), new ModelTexture(textureLoader.load("stall")));
 //        objLoader.printLastLoadInfo();
 //        for (int i = 0; i < 20; i++) {
 //            float x = random.nextFloat() * 110 - 60;
@@ -65,7 +65,7 @@ public class EntitiesManager {
 //            entities.add(new Entity("stall", stallStaticModel, new Vector3f(x, y, z), new Vector3f(random.nextFloat() * 180f, random.nextFloat() * 180f, 0f), 1f));
 //        }
 //
-//        TexturedModel boxStaticModel = new TexturedModel(objLoader.loadModel("box"), new ModelTexture(loader.loadTexture("stone_512")));
+//        TexturedModel boxStaticModel = new TexturedModel(objLoader.loadModel("box"), new ModelTexture(textureLoader.load("stone_512")));
 //        objLoader.printLastLoadInfo();
 //        for (int i = 0; i < 20; i++) {
 //            float x = random.nextFloat() * 120 - 70;
@@ -76,7 +76,7 @@ public class EntitiesManager {
 //
 //        ModelData data = OBJFileLoader.loadOBJ("pack/Tree1");
 //        RawModel tree1 = loader.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
-//        TexturedModel tree1TexturedModel = new TexturedModel(tree1, new ModelTexture(loader.loadTexture("pack/tree")));
+//        TexturedModel tree1TexturedModel = new TexturedModel(tree1, new ModelTexture(textureLoader.load("pack/tree")));
 //        Entity tree1Entity = new Entity("tree1", tree1TexturedModel, new Vector3f(0, 0, 0), new Vector3f(0f, 0f, 0f), 1f);
 //    }
 
@@ -84,21 +84,21 @@ public class EntitiesManager {
         float size1 = random.nextFloat() * 0.1f + 0.6f;
         float size2 = random.nextFloat() + 3.6f;
 
-        TexturedModel tree = new TexturedModel(objLoader.loadModel("pack/tree"), new ModelTexture(loader.loadTexture("pack/tree"))); // TODO add ModelTextureLoader(Loader loader) f(){return new ModelTexture(loader.loadTexture)}
+        TexturedModel tree = new TexturedModel(objLoader.loadModel("pack/tree"), new ModelTexture(textureLoader.load("pack/tree"))); // TODO add ModelTextureLoader(Loader loader) f(){return new ModelTexture(loader.load)}
         scatterOnAllTerrains(tree, size2, 2000);
 
-        TexturedModel grass = new TexturedModel(objLoader.loadModel("pack/grassModel"), new ModelTexture(loader.loadTexture("pack/grassTexture")));
+        TexturedModel grass = new TexturedModel(objLoader.loadModel("pack/grassModel"), new ModelTexture(textureLoader.load("pack/grassTexture")));
         grass.getRawModel().setFaceCulled(false);
         grass.getTexture().setUseFakeLighting(true);
         scatterOnAllTerrains(grass, 1, 2000);
 
-        TexturedModel flower = new TexturedModel(objLoader.loadModel("pack/grassModel"), new ModelTexture(loader.loadTexture("pack/flower")));
+        TexturedModel flower = new TexturedModel(objLoader.loadModel("pack/grassModel"), new ModelTexture(textureLoader.load("pack/flower")));
         flower.getRawModel().setFaceCulled(false);
         flower.getTexture().setUseFakeLighting(true);
         scatterOnAllTerrains(flower, 1, 2000);
 
-//        TexturedModel fern = new TexturedModel(objLoader.loadModel("pack/fern"), new ModelTexture(loader.loadTexture("pack/fern")));
-        TexturedModel fern = new TexturedModel(objLoader.loadModel("pack/fern"), new ModelTexture(loader.loadTexture("pack/fern_atlas")));
+//        TexturedModel fern = new TexturedModel(objLoader.loadModel("pack/fern"), new ModelTexture(textureLoader.load("pack/fern")));
+        TexturedModel fern = new TexturedModel(objLoader.loadModel("pack/fern"), new ModelTexture(textureLoader.load("pack/fern_atlas")));
         fern.getRawModel().setFaceCulled(false);
         fern.getTexture().setTextureAtlasSize(2); // add this line if using atlas texture
         scatterOnAllTerrains(fern, 1, 2000);
@@ -117,7 +117,7 @@ public class EntitiesManager {
     }
 
     private void createPlayerEntity() {
-        TexturedModel player = new TexturedModel(objLoader.loadModel("pack/player"), new ModelTexture(loader.loadTexture("pack/player")));
+        TexturedModel player = new TexturedModel(objLoader.loadModel("pack/player"), new ModelTexture(textureLoader.load("pack/player")));
         playerEntity = new Player("player", player, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), 1);
     }
 }

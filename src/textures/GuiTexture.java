@@ -12,7 +12,7 @@ public class GuiTexture {
     /**
      * This constructor uses scale of texture in relation to the size of the screen.
      *
-     * @param id       Texture id from loader
+     * @param id       OpenGL texture id from texture loader
      * @param position The centre position of gui texture can be in range -1 to 1
      * @param scale    Scale is in relation to the size of the screen, 0 is none and 1 is full size of the screen
      */

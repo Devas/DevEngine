@@ -1,7 +1,7 @@
 package devengine;
 
 import entities.Entity;
-import loaders.Loader;
+import loaders.TextureLoader;
 import terrains.Terrain;
 import terrains.TerrainLoader;
 import textures.TerrainTexture;
@@ -18,13 +18,13 @@ public class TerrainsManager {
     private final int TERRAINS_GRID_X_SIZE = 2; // Max number of possible Terrain objects along X axis
     private final int TERRAINS_GRID_Z_SIZE = 2; // Max number of possible Terrain objects along Z axis
 
-    private final Loader loader;
+    private final TextureLoader textureLoader;
     private final TerrainLoader terrainLoader;
     private List<Terrain> terrainsList = new ArrayList<>();
     private Terrain[][] terrainsGrid = new Terrain[TERRAINS_GRID_X_SIZE][TERRAINS_GRID_Z_SIZE];
 
-    public TerrainsManager(Loader loader, TerrainLoader terrainLoader) {
-        this.loader = loader;
+    public TerrainsManager(TextureLoader textureLoader, TerrainLoader terrainLoader) {
+        this.textureLoader = textureLoader;
         this.terrainLoader = terrainLoader;
         createTerrains();
     }
@@ -81,12 +81,12 @@ public class TerrainsManager {
     }
 
     private void createTerrains() {
-        TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("terrain/grass_natural_2048")); // "terrain/anime_grass_512"
-        TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("terrain/mud_dry_256"));
-        TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("terrain/grass_flowers_256"));
-        TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("terrain/paving_256"));
+        TerrainTexture backgroundTexture = new TerrainTexture(textureLoader.load("terrain/grass_natural_2048")); // "terrain/anime_grass_512"
+        TerrainTexture rTexture = new TerrainTexture(textureLoader.load("terrain/mud_dry_256"));
+        TerrainTexture gTexture = new TerrainTexture(textureLoader.load("terrain/grass_flowers_256"));
+        TerrainTexture bTexture = new TerrainTexture(textureLoader.load("terrain/paving_256"));
         TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
-        TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("terrain/blend_map_1024"));
+        TerrainTexture blendMap = new TerrainTexture(textureLoader.load("terrain/blend_map_1024"));
 
         Terrain terrain00 = new Terrain(terrainLoader, 0, 0, texturePack, blendMap, "heightmap_1_256.png");
         Terrain terrain10 = new Terrain(terrainLoader, 1, 0, texturePack, blendMap, "heightmap_1_256.png");
