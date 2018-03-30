@@ -88,7 +88,7 @@ public class TerrainsManager {
         TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
         TerrainTexture blendMap = new TerrainTexture(textureLoader.load("terrain/blend_map_1024"));
 
-        Terrain terrain00 = new Terrain(terrainLoader, 0, 0, texturePack, blendMap, "heightmap_1_256.png");
+        Terrain terrain00 = new Terrain(terrainLoader, 0, 0, texturePack, blendMap, "heightmap_1_256.png"); // TODO extract loading before creating and pass loaded data?
         Terrain terrain10 = new Terrain(terrainLoader, 1, 0, texturePack, blendMap, "heightmap_1_256.png");
 //        Terrain terrain00 = new Terrain(0, 0, texturePack, blendMap, "heightmap_2_1024.bmp");
 //        Terrain terrain10 = new Terrain(1, 0, texturePack, blendMap, "heightmap_2_1024.bmp");

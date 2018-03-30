@@ -3,6 +3,7 @@ package textures;
 import display.DisplayManager;
 import org.lwjgl.util.vector.Vector2f;
 
+// TODO extend Texture
 public class GuiTexture {
 
     private int textureID;

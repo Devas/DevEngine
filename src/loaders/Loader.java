@@ -45,6 +45,8 @@ public class Loader {
     public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) { // TODO rename textureCoords to uvCoords
         int vaoID = createVAO();
         bindIndexBuffer(indices);
+        // TODO enum VAOStructure VAOAttributeType - VertexAttributeListIndex - ValuesPerCoordinate
+        // TODO constructor(POSITION(0, 3)) storeDataInVertexAttributeArray(VAOStructure.Position.getVertexAttributeListIndex, VAOStructure.Position.getValuesPerCoordinate)
         storeDataInVertexAttributeArray(0, 3, positions);      // Store 3-value-vertex-positions in attribute 0 (vertex buffer)
         storeDataInVertexAttributeArray(1, 2, textureCoords);  // Store 2-values-texture-coords in attribute 1 (uv buffer)
         storeDataInVertexAttributeArray(2, 3, normals);        // Store 3-value-normals in attribute 2 (normals buffer)
@@ -149,11 +151,7 @@ public class Loader {
      * Delete all VAOs, VBOs.
      */
     public void cleanUp() {
-        for (Integer vao : vaos) {
-            GL30.glDeleteVertexArrays(vao);
-        }
-        for (Integer vbo : vbos) {
-            GL15.glDeleteBuffers(vbo);
-        }
+        vaos.forEach(GL30::glDeleteVertexArrays);
+        vbos.forEach(GL15::glDeleteBuffers);
     }
 }

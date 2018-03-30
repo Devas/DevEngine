@@ -51,7 +51,11 @@ public class EntityRenderer {
     }
 
     /**
-     * This method executes for every TexturedModel.
+     * This method executes for every TexturedModel. It:
+     * -binds VAO
+     * -enables vertex attributes arrays in VAO
+     * -loads texture related parameters to shader
+     * -activates and binds texture
      */
     private void prepareTexturedModel(TexturedModel texturedModel) {
         RawModel rawModel = texturedModel.getRawModel();

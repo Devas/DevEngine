@@ -31,7 +31,7 @@ void main(void) {
     vec4 blendMapColour = texture(blendMap, pass_textureCoords);
 
     float backgroundTextureAmount = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
-    vec2 tiledCoordinates = pass_textureCoords * 40;
+    vec2 tiledCoordinates = pass_textureCoords * 40; // TODO tiling variable
 
     vec4 backgroundTextureColour = texture(backgroundTexture, tiledCoordinates) * backgroundTextureAmount;
     vec4 rTextureColour = texture(rTexture, tiledCoordinates) * blendMapColour.r;

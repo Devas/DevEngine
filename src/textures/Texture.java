@@ -3,17 +3,18 @@ package textures;
 /**
  * Base class for textures.
  */
+// TODO maybe Texture should contain only textureId if other fields are not needed in some textures?
 public class Texture {
 
-    private int textureID;
+    private int textureID; // TODO rename to ID?
     private float shineDamper = 1;
     private float reflectivity = 0;
 
-    public Texture(int id) {
-        this.textureID = id;
+    public Texture(int textureID) {
+        this.textureID = textureID;
     }
 
-    public int getID() {
+    public int getID() { // TODO rename?
         return textureID;
     }
 

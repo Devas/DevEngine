@@ -29,6 +29,9 @@ public class EntityShader extends ShaderProgram {
         super(VERTEX_FILE, FRAGMENT_FILE);
     }
 
+    /**
+     * Binds attribute vertex arrays of VAO to in variables in vertex shader.
+     */
     @Override
     protected void bindAttributes() {
         super.bindVertexAttributeArrayToShaderVariable(0, "position");

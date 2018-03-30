@@ -13,7 +13,7 @@ package textures;
 public class ModelTexture extends Texture {
 
     private boolean useFakeLighting = false;
-    private int textureAtlasSize = 1;
+    private int textureAtlasSize = 1; // Number of rows and columns in texture's atlas.
 
     public ModelTexture(int id) {
         super(id);

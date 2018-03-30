@@ -13,7 +13,8 @@ import java.util.List;
 import static org.newdawn.slick.opengl.TextureLoader.getTexture;
 
 /**
- * Loads textures from files using SlickUtil. Initializes OpenGL texture settings.
+ * Loads textures from files using SlickUtil. load() returns loaded texture id.
+ * Also initializes OpenGL texture settings.
  */
 public class TextureLoader {
 
@@ -58,9 +59,7 @@ public class TextureLoader {
      * Delete all textures.
      */
     public void cleanUp() {
-        for (int texture : textures) {
-            GL11.glDeleteTextures(texture);
-        }
+        textures.forEach(GL11::glDeleteTextures);
     }
 
     private int getMaxTextureSize() {
