@@ -133,11 +133,11 @@ public abstract class ShaderProgram {
      * @param value value to be loaded to shader variable
      */
     protected void loadBoolean(int location, boolean value) {
-        float toLoad = 0;
+        int shouldBeLoaded = 0;
         if (value) {
-            toLoad = 1;
+            shouldBeLoaded = 1;
         }
-        GL20.glUniform1f(location, toLoad);
+        GL20.glUniform1i(location, shouldBeLoaded);
     }
 
     /**

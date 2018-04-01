@@ -15,7 +15,7 @@ uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform vec3 lightPosition;
 
-uniform float useFakeLighting; // Only receives 0 or 1 so it acts like boolean
+uniform int useFakeLighting; // Receives only 0 or 1 so it acts like boolean
 uniform float textureAtlasSize;
 uniform vec2 textureAtlasOffsets;
 
@@ -38,7 +38,7 @@ void main(void) {
     // Useful only for small objects placed on the ground level (like grass for example).
     // We could alter the normals to face up in Java before they are sent, but we if-check uniform which isn't slow.
     vec3 actualNormal = normal;
-    if (useFakeLighting > 0.5) {
+    if (useFakeLighting > 0) {
         actualNormal = vec3(0.0, 1.0, 0.0);
     }
 
