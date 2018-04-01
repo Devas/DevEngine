@@ -69,7 +69,7 @@ public class EntityRenderer {
             MasterRenderer.disableFaceCulling();
         }
         shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
-        shader.loadFakeLightingVariable(texture.isUseFakeLighting());
+        shader.loadFakeLightingVariable(texture.isFakeLighting());
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getID());
     }

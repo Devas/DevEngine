@@ -89,12 +89,12 @@ public class EntitiesManager {
 
         TexturedModel grass = new TexturedModel(objLoader.loadModel("pack/grassModel"), new ModelTexture(textureLoader.load("pack/grassTexture")));
         grass.getRawModel().setFaceCulled(false);
-        grass.getTexture().setUseFakeLighting(true);
+        grass.getTexture().setFakeLighting(true);
         scatterOnAllTerrains(grass, 1, 2000);
 
         TexturedModel flower = new TexturedModel(objLoader.loadModel("pack/grassModel"), new ModelTexture(textureLoader.load("pack/flower")));
         flower.getRawModel().setFaceCulled(false);
-        flower.getTexture().setUseFakeLighting(true);
+        flower.getTexture().setFakeLighting(true);
         scatterOnAllTerrains(flower, 1, 2000);
 
 //        TexturedModel fern = new TexturedModel(objLoader.loadModel("pack/fern"), new ModelTexture(textureLoader.load("pack/fern")));
