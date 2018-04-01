@@ -12,46 +12,50 @@ public class TerrainShader extends ShaderProgram {
     private static final String VERTEX_FILE = SHADERS_PATH + "terrain/terrainVertexShader.glsl";
     private static final String FRAGMENT_FILE = SHADERS_PATH + "terrain/terrainFragmentShader.glsl";
 
+    // Vertex shader
     private int location_transformationMatrix;
     private int location_projectionMatrix;
     private int location_viewMatrix;
     private int location_lightPosition;
-    private int location_lightColour;
-    private int location_shineDamper;
-    private int location_reflectivity;
-    private int location_skyColour;
+    // Fragment shader
     private int location_backgroundTexture;
     private int location_rTexture;
     private int location_gTexture;
     private int location_bTexture;
     private int location_blendMap;
+    private int location_lightColour;
+    private int location_shineDamper;
+    private int location_reflectivity;
+    private int location_skyColour;
 
     public TerrainShader() {
         super(VERTEX_FILE, FRAGMENT_FILE);
     }
 
     @Override
-    protected void bindAttributes() {
-        super.bindVertexAttributeArrayToShaderVariable(0, "position");
-        super.bindVertexAttributeArrayToShaderVariable(1, "textureCoords");
-        super.bindVertexAttributeArrayToShaderVariable(2, "normal");
+    protected void bindAllAttributesToShaderVariables() {
+        super.bindAttributeToShaderVariable(0, "position");
+        super.bindAttributeToShaderVariable(1, "textureCoords");
+        super.bindAttributeToShaderVariable(2, "normal");
     }
 
     @Override
     protected void getAllUniformLocations() {
+        // Vertex shader
         location_transformationMatrix = super.getUniformLocation("transformationMatrix");
         location_projectionMatrix = super.getUniformLocation("projectionMatrix");
         location_viewMatrix = super.getUniformLocation("viewMatrix");
         location_lightPosition = super.getUniformLocation("lightPosition");
-        location_lightColour = super.getUniformLocation("lightColour");
-        location_shineDamper = super.getUniformLocation("shineDamper");
-        location_reflectivity = super.getUniformLocation("reflectivity");
-        location_skyColour = super.getUniformLocation("skyColour");
+        // Fragment shader
         location_backgroundTexture = super.getUniformLocation("backgroundTexture");
         location_rTexture = super.getUniformLocation("rTexture");
         location_gTexture = super.getUniformLocation("gTexture");
         location_bTexture = super.getUniformLocation("bTexture");
         location_blendMap = super.getUniformLocation("blendMap");
+        location_lightColour = super.getUniformLocation("lightColour");
+        location_shineDamper = super.getUniformLocation("shineDamper");
+        location_reflectivity = super.getUniformLocation("reflectivity");
+        location_skyColour = super.getUniformLocation("skyColour");
     }
 
     public void loadTransformationMatrix(Matrix4f matrix) {

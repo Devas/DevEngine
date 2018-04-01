@@ -13,7 +13,8 @@ import java.io.IOException;
 import java.nio.FloatBuffer;
 
 /**
- * Abstract class with containing shader functionality.
+ * Base class for all shaders. Contains many methods that allow to operate on shaders.
+ * Basically you inherit this class and implement bindAllAttributesToShaderVariables() and getAllUniformLocations().
  */
 public abstract class ShaderProgram {
 
@@ -23,7 +24,7 @@ public abstract class ShaderProgram {
     private int vertexShaderID;
     private int fragmentShaderID;
 
-    private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+    private static FloatBuffer matrix4fBuffer = BufferUtils.createFloatBuffer(16); // Buffer for 4x4 float matrix
 
     /**
      * Creates generic shader program.
@@ -39,7 +40,7 @@ public abstract class ShaderProgram {
         programID = GL20.glCreateProgram();
         GL20.glAttachShader(programID, vertexShaderID);
         GL20.glAttachShader(programID, fragmentShaderID);
-        bindAttributes();
+        bindAllAttributesToShaderVariables();
         GL20.glLinkProgram(programID);
         GL20.glValidateProgram(programID);
         getAllUniformLocations();
@@ -50,58 +51,87 @@ public abstract class ShaderProgram {
     }
 
     /**
-     * To be implemented in child class using bindVertexAttributeArrayToShaderVariable().
+     * In this method you should bind all VAO attributes to shader variables (in vertex and fragment shaders).
+     * Use bindAttributeToShaderVariable() to implement this method in child class.
      */
-    protected abstract void bindAttributes();
+    protected abstract void bindAllAttributesToShaderVariables();
 
     /**
-     * To be implemented in child class using getUniformLocation().
+     * In this method you should retrieve from shaders all locations of uniform variables.
+     * Use getUniformLocation() to implement this method in child class.
      */
     protected abstract void getAllUniformLocations();
 
     /**
-     * Use it when implementing bindAttributes() in child class.
-     * <p>
      * Binds specified vertex attribute array into specified shader variable.
+     * Use it when implementing bindAllAttributesToShaderVariables() in child class.
      *
-     * @param vertexAttributeArrayIndex index of vertex attribute array in VAO which we want bind into shader
+     * @param attributeIndex index of vertex attribute array in VAO that we want to bind into shader
      * @param shaderVariableName name of variable in shader into which specified vertex attribute array will be bound
      */
-    protected void bindVertexAttributeArrayToShaderVariable(int vertexAttributeArrayIndex, String shaderVariableName) {
-        GL20.glBindAttribLocation(programID, vertexAttributeArrayIndex, shaderVariableName);
+    protected void bindAttributeToShaderVariable(int attributeIndex, String shaderVariableName) {
+        GL20.glBindAttribLocation(programID, attributeIndex, shaderVariableName);
     }
 
     /**
+     * Returns the location of the uniform variable declared in shader.
      * Use it when implementing getAllUniformLocations() in child class.
      *
-     * @param uniformName
-     * @return
+     * @param uniformVariableName name of uniform variable declared in shader
+     * @return location of uniform variable declared in shader
      */
-    protected int getUniformLocation(String uniformName) {
-        return GL20.glGetUniformLocation(programID, uniformName);
+    protected int getUniformLocation(String uniformVariableName) {
+        return GL20.glGetUniformLocation(programID, uniformVariableName);
     }
 
+    /**
+     * Enables shader program.
+     */
     public void start() {
         GL20.glUseProgram(programID);
     }
 
+    /**
+     * Disables shader program.
+     */
     public void stop() {
         GL20.glUseProgram(0);
     }
 
+    /**
+     * Disables shader program and then deletes it.
+     */
     public void cleanUp() {
         stop();
         GL20.glDeleteProgram(programID);
     }
 
+    /**
+     * Wrapper method that loads int value to shader variable.
+     *
+     * @param location location of shader variable
+     * @param value value to be loaded to shader variable
+     */
     protected void loadInt(int location, int value) {
         GL20.glUniform1i(location, value);
     }
 
+    /**
+     * Wrapper method that loads float value to shader variable.
+     *
+     * @param location location of shader variable
+     * @param value value to be loaded to shader variable
+     */
     protected void loadFloat(int location, float value) {
         GL20.glUniform1f(location, value);
     }
 
+    /**
+     * Wrapper method that loads boolean value to shader variable.
+     *
+     * @param location location of shader variable
+     * @param value value to be loaded to shader variable
+     */
     protected void loadBoolean(int location, boolean value) {
         float toLoad = 0;
         if (value) {
@@ -110,18 +140,36 @@ public abstract class ShaderProgram {
         GL20.glUniform1f(location, toLoad);
     }
 
+    /**
+     * Wrapper method that loads 2-float vector to shader variable.
+     *
+     * @param location location of shader variable
+     * @param vector 2-float vector to be loaded to shader variable
+     */
     protected void loadVector(int location, Vector2f vector) {
         GL20.glUniform2f(location, vector.x, vector.y);
     }
 
+    /**
+     * Wrapper method that loads 3-float vector to shader variable.
+     *
+     * @param location location of shader variable
+     * @param vector 3-float vector to be loaded to shader variable
+     */
     protected void loadVector(int location, Vector3f vector) {
         GL20.glUniform3f(location, vector.x, vector.y, vector.z);
     }
 
+    /**
+     * Wrapper method that loads 4x4 float matrix to shader variable.
+     *
+     * @param location location of shader variable
+     * @param matrix 4x4 float matrix to be loaded to shader variable
+     */
     protected void loadMatrix(int location, Matrix4f matrix) {
-        matrix.store(matrixBuffer);
-        matrixBuffer.flip();
-        GL20.glUniformMatrix4(location, false, matrixBuffer);
+        matrix.store(matrix4fBuffer);
+        matrix4fBuffer.flip();
+        GL20.glUniformMatrix4(location, false, matrix4fBuffer);
     }
 
     /**

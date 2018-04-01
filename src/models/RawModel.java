@@ -11,8 +11,7 @@ public class RawModel {
 
     private int vaoID;
     private int verticesToRenderCount;
-
-    private boolean faceCulled = true; // Face Culling is enabled by default for maximum efficiency // TODO can be moved also to TexturedModel or Texture
+    private boolean faceCulled = true; // Face Culling is enabled by default for maximum efficiency // TODO can be moved also to TexturedModel
 
     /**
      * @param vaoID id of VAO

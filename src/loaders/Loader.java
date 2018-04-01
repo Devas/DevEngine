@@ -57,6 +57,7 @@ public class Loader {
     /**
      * VAO (Vertex Array Object) consists of 16 (indexed from 0 to GL_MAX_VERTEX_ATTRIBS - 1) vertex attribute arrays
      * (vertex arrays, attribute arrays, attribute list, slots).
+     * A vertex is composed by of or several attributes (positions, normals, texture coordinates etc.) from VAO.
      * VAO does not store any data but stores references to the VBOs.
      * VAOs have the usual creation, destruction, and binding functions:
      * glGenVertexArrays, glDeleteVertexArrays, and glBindVertexArray.
