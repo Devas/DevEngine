@@ -60,13 +60,13 @@ public class EntityShader extends ShaderProgram {
         super.loadMatrix(location_transformationMatrix, matrix);
     }
 
+    public void loadProjectionMatrix(Matrix4f matrix) {
+        super.loadMatrix(location_projectionMatrix, matrix);
+    }
+
     public void loadViewMatrix(Camera camera) {
         Matrix4f viewMatrix = MatrixUtil.createViewMatrix(camera);
         super.loadMatrix(location_viewMatrix, viewMatrix);
-    }
-
-    public void loadProjectionMatrix(Matrix4f matrix) {
-        super.loadMatrix(location_projectionMatrix, matrix);
     }
 
     public void loadLight(Light light) {

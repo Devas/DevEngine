@@ -13,7 +13,13 @@ public class MatrixUtil {
     private static final float FAR_PLANE = 1_000_000;
 
     /**
-     * Used for models.
+     * Creates transformation matrix from: 3f translation (position) vector, 3f rotation vector, uniform scale scalar.
+     * Used to create transformation for different 3d models (entities, terrains).
+     *
+     * @param translation translation (position) of model
+     * @param rotation rotation of model along xyz axis
+     * @param scale uniform scale value (1 for original scale)
+     * @return transformation matrix
      */
     public static Matrix4f createTransformationMatrix(Vector3f translation, Vector3f rotation, float scale) {
         Matrix4f matrix = new Matrix4f();
@@ -27,7 +33,12 @@ public class MatrixUtil {
     }
 
     /**
-     * Used for GUI.
+     * Creates transformation matrix from: 2f translation (position) vector, 2f non-uniform scale vector.
+     * Used to create transformation for textures.
+     *
+     * @param translation translation (position) of model
+     * @param scale non-uniform scale value (1 for original scale)
+     * @return transformation matrix
      */
     public static Matrix4f createTransformationMatrix(Vector2f translation, Vector2f scale) {
         Matrix4f matrix = new Matrix4f();

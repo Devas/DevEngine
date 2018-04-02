@@ -24,7 +24,7 @@ void main(void) {
     pass_textureCoords = textureCoords;
 
     // MVP computations
-    vec4 worldPosition = transformationMatrix * vec4(position, 1.0);
+    vec4 worldPosition = transformationMatrix * vec4(position, 1.0);  // Multiply 4x4 matrix by 4x1 vector = 4x1 vector
     vec4 positionRelativeToCamera = viewMatrix * worldPosition;
     gl_Position = projectionMatrix * positionRelativeToCamera;
 
