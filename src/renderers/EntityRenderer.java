@@ -76,13 +76,13 @@ public class EntityRenderer {
 
     /**
      * This method executes for every Entity (instance of TexturedModel). It:
-     * -loads transformation matrix
+     * -creates transformation matrix and loads it to vertex shader
      * -loads texture atlas offsets
      */
     private void prepareInstance(Entity e) {
         Matrix4f transformationMatrix = MatrixUtil.createTransformationMatrix(e.getPosition(), e.getRotation(), e.getScale());
         shader.loadTransformationMatrix(transformationMatrix);
-        shader.loadTextureAtlasOffsets(e.getTextureAtlasOffsetX(), e.getTextureAtlasOffsetY()); // TODO can be changed to f taking Vector2f
+        shader.loadTextureAtlasOffsets(e.getTextureAtlasOffsets());
     }
 
     /**

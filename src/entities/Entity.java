@@ -1,6 +1,7 @@
 package entities;
 
 import models.TexturedModel;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Entity {
@@ -11,10 +12,8 @@ public class Entity {
     private Vector3f rotation;
     private float scale;
 
-    // Indicates which part of the atlas texture this entity should use. By default use top-left part of the texture.
+    // Indicates which part of the atlas texture this entity should use. By default use top-left texture atlas.
     private int textureAtlasIndex = 0;
-
-    // TODO Builder pattern http://stackoverflow.com/questions/328496/when-would-you-use-the-builder-pattern http://www.javaspecialists.eu/archive/Issue163.html
 
     public Entity(String name, TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
         this.name = name;
@@ -45,15 +44,30 @@ public class Entity {
         rotation.z += dz;
     }
 
-    // TODO these two f can be replaced with one f returning Vector2f
-    public float getTextureAtlasOffsetX() {
-        int column = textureAtlasIndex % model.getTexture().getTextureAtlasSize();
-        return (float) column / (float) model.getTexture().getTextureAtlasSize();
+    /**
+     * @return X position on the texture, range [0, 1)
+     */
+    // TODO if not needed separately then move to getTextureAtlasOffsets()
+    private float getTextureAtlasOffsetX() {
+        int textureAtlasSize = model.getTexture().getTextureAtlasSize();
+        int column = textureAtlasIndex % textureAtlasSize;
+        return (float) column / (float) textureAtlasSize;
     }
 
-    public float getTextureAtlasOffsetY() {
-        int row = textureAtlasIndex / model.getTexture().getTextureAtlasSize();
-        return (float) row / (float) model.getTexture().getTextureAtlasSize();
+    /**
+     * @return Y position on the texture, range [0, 1)
+     */
+    private float getTextureAtlasOffsetY() {
+        int textureAtlasSize = model.getTexture().getTextureAtlasSize();
+        int row = textureAtlasIndex / textureAtlasSize;
+        return (float) row / (float) textureAtlasSize;
+    }
+
+    /**
+     * @return vector consisting of X and Y positions on the texture, both in range [0, 1)
+     */
+    public Vector2f getTextureAtlasOffsets() {
+        return new Vector2f(getTextureAtlasOffsetX(), getTextureAtlasOffsetY());
     }
 
     public String getName() {

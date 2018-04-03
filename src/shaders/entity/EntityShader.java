@@ -91,7 +91,10 @@ public class EntityShader extends ShaderProgram {
         super.loadFloat(location_textureAtlasSize, textureAtlasSize);
     }
 
-    public void loadTextureAtlasOffsets(float xOffset, float yOffset) {
-        super.loadVector(location_textureAtlasOffsets, new Vector2f(xOffset, yOffset));
+    /**
+     * @param offsets vector consisting of xOffset and yOffset
+     */
+    public void loadTextureAtlasOffsets(Vector2f offsets) {
+        super.loadVector(location_textureAtlasOffsets, offsets);
     }
 }
